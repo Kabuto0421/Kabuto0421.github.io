@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
     <title>ようこそ、かぶとの住処へ - 自己紹介</title>
 </head>
 
@@ -24,7 +25,8 @@
             <a href="https://twitter.com/Kabuto0421" target="_blank">
                 <img src="twitter.png" alt="twitter" class="twitter-image">
             </a>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSekCt8pvi2nPJa1sdYpRITzwiwz6pBY73iSDtWFSTQgtgdBtw/viewform?usp=sf_link" target="_blank">
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSekCt8pvi2nPJa1sdYpRITzwiwz6pBY73iSDtWFSTQgtgdBtw/viewform?usp=sf_link"
+                target="_blank">
                 <img src="questionIcon.png" alt="question" class="question-image">
             </a>
             <!-- 追加するGitHubアイコンのHTML -->
@@ -54,38 +56,38 @@
     </div>
     <script src="Build/kabutoPage3.loader.js"></script>
     <script>
-    var canvas = document.querySelector("#unity-canvas");
-    if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        // Mobile device
-        var meta = document.createElement('meta');
-        meta.name = 'viewport';
-        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-        document.getElementsByTagName('head')[0].appendChild(meta);
+        var canvas = document.querySelector("#unity-canvas");
+        if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+            // Mobile device
+            var meta = document.createElement('meta');
+            meta.name = 'viewport';
+            meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+            document.getElementsByTagName('head')[0].appendChild(meta);
 
-        canvas.style.width = "375px";
-        canvas.style.height = "250px";
-        document.body.style.textAlign = "center";
-    } else if(/mac/i.test(navigator.userAgent)){
-        // Desktop or other device
-        canvas.style.width = "600px";
-        canvas.style.height = "375px";
-    }else{
-    canvas.style.width = "960px";
-        canvas.style.height = "600px";
-    }
+            canvas.style.width = "375px";
+            canvas.style.height = "250px";
+            document.body.style.textAlign = "center";
+        } else if (/mac/i.test(navigator.userAgent)) {
+            // Desktop or other device
+            canvas.style.width = "600px";
+            canvas.style.height = "375px";
+        } else {
+            canvas.style.width = "960px";
+            canvas.style.height = "600px";
+        }
 
-    createUnityInstance(document.querySelector("#unity-canvas"), {
-        dataUrl: "Build/kabutoPage3.data.unityweb",
-        frameworkUrl: "Build/kabutoPage3.framework.js.unityweb",
-        codeUrl: "Build/kabutoPage3.wasm.unityweb",
-        streamingAssetsUrl: "StreamingAssets",
-        companyName: "DefaultCompany",
-        productName: "Web3D",
-        productVersion: "0.1",
-    });
-</script>
+        createUnityInstance(document.querySelector("#unity-canvas"), {
+            dataUrl: "Build/kabutoPage3.data.unityweb",
+            frameworkUrl: "Build/kabutoPage3.framework.js.unityweb",
+            codeUrl: "Build/kabutoPage3.wasm.unityweb",
+            streamingAssetsUrl: "StreamingAssets",
+            companyName: "DefaultCompany",
+            productName: "Web3D",
+            productVersion: "0.1",
+        });
+    </script>
 
-     <div class="content">
+    <div class="content">
         <h2>基本情報</h2>
         <ul>
             <li>特徴：未来的なカブトムシと融合した高専生のVTuber</li>
@@ -128,4 +130,3 @@
 </footer>
 
 </html>
-
