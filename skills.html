@@ -1,0 +1,128 @@
+﻿<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>SKILL - かぶとの住処</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  </head>
+   <body style="background: url('background.mp4') no-repeat center center fixed; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;">
+    <video autoplay loop muted playsinline id="bg-video">
+      <source src="background.mp4" type="video/mp4">
+    </video>
+      <div class="header-images">
+        <a href="index.html">
+            <img src="title.png" alt="Title" class="title-image">
+        </a>
+        <div class="social-icons">
+            <a href="https://www.youtube.com/@user-py3rf8lu5t" target="_blank">
+                <img src="youtube.png" alt="youtube" class="youtube-image">
+            </a>
+            <a href="https://twitter.com/Kabuto0421" target="_blank">
+                <img src="twitter.png" alt="twitter" class="twitter-image">
+            </a>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSekCt8pvi2nPJa1sdYpRITzwiwz6pBY73iSDtWFSTQgtgdBtw/viewform?usp=sf_link" target="_blank">
+                <img src="questionIcon.png" alt="question" class="question-image">
+            </a>
+            <!-- 追加するGitHubアイコンのHTML -->
+            <a href="https://github.com/Kabuto0421" target="_blank">
+                <img src="github.png" alt="github" class="github-image">
+            </a>
+        </div>
+    </div>
+   <h3> </h3>
+    <div class="canvas-container">
+      <canvas id="unity-canvas" width=960 height=600 style="background: #231F20"></canvas>
+    </div>
+    <div class="menu-container">
+     <img src="menuA01.png" alt="Menu A01" class="no-effect">
+    <div class="menu-images">
+        <img src="menuB02.png" alt="Menu B02" class="shift-left-1" id="menuB02" onmouseover="changeImage('menuA02.png', 'menuB02')" onmouseout="changeImage('menuB02.png', 'menuB02')" onclick="navigateToIntro()">
+        <img src="menuA03.png" alt="Menu A03" class="shift-left-2" id="menuA03" onmouseover="changeImage('menuA03.png', 'menuA03')" onmouseout="changeImage('menuA03.png', 'menuA03')" onclick="navigateToSkills()">
+        <img src="menuB04.png" alt="Menu B04" class="shift-left-3" id="menuB04" onmouseover="changeImage('menuA04.png', 'menuB04')" onmouseout="changeImage('menuB04.png', 'menuB04')" onclick="navigateToGallery()">
+    </div>
+</div>
+     <div class="content">
+        <h2>プログラミング言語</h2>
+        <ul>
+            <li>C</li>
+            <li>JavaScript</li>
+            <li>TypeScript</li>
+            <li>C#</li>
+            <li>Python</li>
+            <li>Dart</li>
+        </ul>
+        
+
+        <h2>Web開発</h2>
+        <ul>
+            <li>HTML</li>
+            <li>CSS</li>
+            <li>PHP</li>
+            <li>Node.js</li>
+        </ul>
+
+        <h2>ツール・フレームワーク</h2>
+        <ul>
+            <li>Processing</li>
+            <li>Unity</li>
+            <li>Flutter</li>
+            <li>Firebase</li>
+            <li>React</li>
+        </ul>
+        
+    </div>
+    <script src="Build/kabutoPage3.loader.js"></script>
+    <script>
+    var canvas = document.querySelector("#unity-canvas");
+    if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        // Mobile device
+        var meta = document.createElement('meta');
+        meta.name = 'viewport';
+        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+        document.getElementsByTagName('head')[0].appendChild(meta);
+
+        canvas.style.width = "320px";
+        canvas.style.height = "200px";
+        document.body.style.textAlign = "center";
+    } else if(/mac/i.test(navigator.userAgent)){
+        // Desktop or other device
+        canvas.style.width = "600px";
+        canvas.style.height = "375px";
+    }else{
+    canvas.style.width = "960px";
+        canvas.style.height = "600px";
+    }
+
+    createUnityInstance(document.querySelector("#unity-canvas"), {
+        dataUrl: "Build/kabutoPage3.data.unityweb",
+        frameworkUrl: "Build/kabutoPage3.framework.js.unityweb",
+        codeUrl: "Build/kabutoPage3.wasm.unityweb",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "DefaultCompany",
+        productName: "Web3D",
+        productVersion: "0.1",
+    });
+</script>
+    <script src="index.js" async defer></script>
+    </body>
+<footer class="footer">
+  <div class="footer-content md-flex md-justify-between">
+    <a href="index.html" class="footer__logo">
+      <img src="K_rogo2.png" width="180" height="80" alt="K Logo" />
+    </a>
+    <ul class="footer__navi flex">
+      <li><a href="introduction.html">自己紹介</a></li>
+      <li><a href="skills.html">SKILL</a></li>
+      <li><a href="gallery.html">ギャラリー</a></li>
+    </ul>
+  </div>
+  <hr />
+  <p class="copyright">
+    © 2023 <a href="index.html">Kabuto</a> All Rights Reserved.
+  </p>
+</footer>
+</html>
