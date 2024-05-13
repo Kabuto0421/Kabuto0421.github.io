@@ -4,9 +4,9 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title>ようこそ、かぶとの住処へ</title>
-  <link rel="shortcut icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
-  <link rel="stylesheet" href="style.css">
+  <title>ようこそ、 かぶとの住処へ</title>
+  <link rel="shortcut icon" type="image/png" sizes="96x96" href="pictures/favicon-96x96.png">
+  <link rel="stylesheet" href="CSS/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap"
@@ -15,28 +15,28 @@
 </head>
 
 <body
-  style="background: url('background.mp4') no-repeat center center fixed; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;">
+  style="background: url('Movie/background.mp4') no-repeat center center fixed; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;">
   <video autoplay loop muted playsinline id="bg-video">
-    <source src="background.mp4" type="video/mp4">
+    <source src="Movie/background.mp4" type="video/mp4">
   </video>
   <div class="header-images">
     <a href="index.html">
-      <img src="title.png" alt="Title" class="title-image">
+      <img src="pictures/title.png" alt="Title" class="title-image">
     </a>
     <div class="social-icons">
       <a href="https://www.youtube.com/@user-py3rf8lu5t" target="_blank">
-        <img src="youtube.png" alt="youtube" class="youtube-image">
+        <img src="pictures/youtube.png" alt="youtube" class="youtube-image">
       </a>
       <a href="https://twitter.com/Kabuto0421" target="_blank">
-        <img src="twitter.png" alt="twitter" class="twitter-image">
+        <img src="pictures/twitter.png" alt="twitter" class="twitter-image">
       </a>
       <a href="https://docs.google.com/forms/d/e/1FAIpQLSekCt8pvi2nPJa1sdYpRITzwiwz6pBY73iSDtWFSTQgtgdBtw/viewform?usp=sf_link"
         target="_blank">
-        <img src="questionIcon.png" alt="question" class="question-image">
+        <img src="pictures/questionIcon.png" alt="question" class="question-image">
       </a>
       <!-- 追加するGitHubアイコンのHTML -->
       <a href="https://github.com/Kabuto0421" target="_blank">
-        <img src="github.png" alt="github" class="github-image">
+        <img src="pictures/github.png" alt="github" class="github-image">
       </a>
     </div>
   </div>>
@@ -45,17 +45,17 @@
     <canvas id="unity-canvas" width=960 height=600 style="background: #231F20"></canvas>
   </div>
   <div class="menu-container">
-    <img src="menuA01.png" alt="Menu A01" class="no-effect">
+    <img src="pictures/menuA01.png" alt="Menu A01" class="no-effect">
     <div class="menu-images">
-      <img src="menuB02.png" alt="Menu B02" class="shift-left-1" id="menuB02"
-        onmouseover="changeImage('menuA02.png', 'menuB02')" onmouseout="changeImage('menuB02.png', 'menuB02')"
-        onclick="navigateToIntro()">
-      <img src="menuB03.png" alt="Menu B03" class="shift-left-2" id="menuB03"
-        onmouseover="changeImage('menuA03.png', 'menuB03')" onmouseout="changeImage('menuB03.png', 'menuB03')"
-        onclick="navigateToSkills()">
-      <img src="menuB04.png" alt="Menu B04" class="shift-left-3" id="menuB04"
-        onmouseover="changeImage('menuA04.png', 'menuB04')" onmouseout="changeImage('menuB04.png', 'menuB04')"
-        onclick="navigateToGallery()">
+      <img src="pictures/menuB02.png" alt="Menu B02" class="shift-left-1" id="menuB02"
+        onmouseover="changeImage('pictures/menuA02.png', 'menuB02')"
+        onmouseout="changeImage('pictures/menuB02.png', 'menuB02')" onclick="navigateToIntro()">
+      <img src="pictures/menuB03.png" alt="Menu B03" class="shift-left-2" id="menuB03"
+        onmouseover="changeImage('pictures/menuA03.png', 'menuB03')"
+        onmouseout="changeImage('pictures/menuB03.png', 'menuB03')" onclick="navigateToSkills()">
+      <img src="pictures/menuB04.png" alt="Menu B04" class="shift-left-3" id="menuB04"
+        onmouseover="changeImage('pictures/menuA04.png', 'menuB04')"
+        onmouseout="changeImage('pictures/menuB04.png', 'menuB04')" onclick="navigateToGallery()">
     </div>
   </div>
 
@@ -100,12 +100,12 @@
       productVersion: "0.1",
     });
   </script>
-  <script src="index.js" async defer></script>
+  <script src="JS/index.js" async defer></script>
 </body>
 <footer class="footer">
   <div class="footer-content md-flex md-justify-between">
     <a href="index.html" class="footer__logo">
-      <img src="K_rogo2.png" width="180" height="80" alt="K Logo" />
+      <img src="pictures/K_rogo2.png" width="180" height="80" alt="K Logo" />
     </a>
     <ul class="footer__navi flex">
       <li><a href="introduction.html">自己紹介</a></li>
