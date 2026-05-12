@@ -1,152 +1,125 @@
-﻿<!DOCTYPE html>
-<html lang="en-us">
+<!DOCTYPE html>
+<html lang="ja">
 
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title>SKILL - かぶとの住処</title>
-  <link rel="shortcut icon" type="image/png" sizes="96x96" href="pictures/favicon-96x96.png">
-  <link rel="stylesheet" href="CSS/style.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap"
-    rel="stylesheet">
-
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SKILL - かぶとの住処</title>
+    <link rel="shortcut icon" type="image/png" sizes="96x96" href="pictures/favicon-96x96.png">
+    <link rel="stylesheet" href="CSS/style.css?v=20260512-2">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 </head>
 
-<body
-  style="background: url('Movie/background.mp4') no-repeat center center fixed; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;">
-  <video autoplay loop muted playsinline id="bg-video">
-    <source src="Movie/background.mp4" type="video/mp4">
-  </video>
-  <div class="header-images">
-    <a href="index.html">
-      <img src="pictures/title.png" alt="Title" class="title-image">
-    </a>
-    <div class="social-icons">
-      <a href="https://www.youtube.com/@user-py3rf8lu5t" target="_blank">
-        <img src="pictures/youtube.png" alt="youtube" class="youtube-image">
-      </a>
-      <a href="https://twitter.com/Kabuto0421" target="_blank">
-        <img src="pictures/twitter.png" alt="twitter" class="twitter-image">
-      </a>
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLSekCt8pvi2nPJa1sdYpRITzwiwz6pBY73iSDtWFSTQgtgdBtw/viewform?usp=sf_link"
-        target="_blank">
-        <img src="pictures/questionIcon.png" alt="question" class="question-image">
-      </a>
-      <!-- 追加するGitHubアイコンのHTML -->
-      <a href="https://github.com/Kabuto0421" target="_blank">
-        <img src="pictures/github.png" alt="github" class="github-image">
-      </a>
+<body>
+    <div class="header-images">
+        <a href="index.html" class="site-home-link">
+            <span class="site-title">Kabuto Portfolio</span>
+        </a>
+        <div class="social-icons">
+            <a href="https://www.youtube.com/@user-py3rf8lu5t" target="_blank" rel="noopener noreferrer">
+                <img src="pictures/youtube.png" alt="youtube" class="youtube-image">
+            </a>
+            <a href="https://twitter.com/Kabuto0421" target="_blank" rel="noopener noreferrer">
+                <img src="pictures/twitter.png" alt="twitter" class="twitter-image">
+            </a>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSekCt8pvi2nPJa1sdYpRITzwiwz6pBY73iSDtWFSTQgtgdBtw/viewform?usp=sf_link" target="_blank" rel="noopener noreferrer">
+                <img src="pictures/questionIcon.png" alt="question" class="question-image">
+            </a>
+            <a href="https://github.com/Kabuto0421" target="_blank" rel="noopener noreferrer">
+                <img src="pictures/github.png" alt="github" class="github-image">
+            </a>
+        </div>
     </div>
-  </div>
-  <h3> </h3>
-  <div class="canvas-container">
-    <canvas id="unity-canvas" width=960 height=600 style="background: #231F20"></canvas>
-  </div>
-  <div class="menu-container">
-    <img src="pictures/menuA01.png" alt="Menu A01" class="no-effect">
-    <div class="menu-images">
-      <img src="pictures/menuB02.png" alt="Menu B02" class="shift-left-1" id="menuB02"
-        onmouseover="changeImage('pictures/menuA02.png', 'menuB02')"
-        onmouseout="changeImage('pictures/menuB02.png', 'menuB02')" onclick="navigateToIntro()">
-      <img src="pictures/menuA03.png" alt="Menu A03" class="shift-left-2" id="menuA03"
-        onmouseover="changeImage('pictures/menuA03.png', 'menuA03')"
-        onmouseout="changeImage('pictures/menuA03.png', 'menuA03')" onclick="navigateToSkills()">
-      <img src="pictures/menuB04.png" alt="Menu B04" class="shift-left-3" id="menuB04"
-        onmouseover="changeImage('pictures/menuA04.png', 'menuB04')"
-        onmouseout="changeImage('pictures/menuB04.png', 'menuB04')" onclick="navigateToGallery()">
+
+    <h3> </h3>
+
+    <div class="canvas-container">
+        <canvas id="unity-canvas" width="960" height="600" aria-label="3D avatar viewer"></canvas>
     </div>
+
+    <div class="menu-container">
+        <img src="pictures/menuA01.png" alt="Menu" class="no-effect">
+        <div class="menu-images">
+            <img src="pictures/menuB02.png" alt="自己紹介" class="shift-left-1" id="menuB02"
+                onmouseover="changeImage('pictures/menuA02.png', 'menuB02')"
+                onmouseout="changeImage('pictures/menuB02.png', 'menuB02')" onclick="navigateToIntro()">
+            <img src="pictures/menuA03.png" alt="SKILL" class="shift-left-2" id="menuA03"
+                onmouseover="changeImage('pictures/menuA03.png', 'menuA03')"
+                onmouseout="changeImage('pictures/menuA03.png', 'menuA03')" onclick="navigateToSkills()">
+            <img src="pictures/menuB04.png" alt="ギャラリー" class="shift-left-3" id="menuB04"
+                onmouseover="changeImage('pictures/menuA04.png', 'menuB04')"
+                onmouseout="changeImage('pictures/menuB04.png', 'menuB04')" onclick="navigateToGallery()">
+        </div>
+    </div>
+
+<div class="content">
+    <h1>Skills</h1>
+
+    <h2>得意領域</h2>
+    <p>
+      Webアプリ開発、AI APIを活用したサービス制作、Unityによるインタラクティブコンテンツ制作を中心に、企画から実装、発表までを経験しています。
+      技術そのものだけでなく、誰に見せるのか、どの場面で使われるのか、どのような体験として伝えるのかを考えながら制作することを大切にしています。
+    </p>
+
+    <h2>主な技術</h2>
+    <ul>
+      <li>・Python：AI API連携、データ処理、プロトタイピング</li>
+      <li>・JavaScript / TypeScript：Webアプリ開発、フロントエンド実装</li>
+      <li>・React / Next.js：WebアプリのUI実装</li>
+      <li>・Node.js：API連携やバックエンド処理</li>
+      <li>・C# / Unity：ゲーム制作、VRChatワールド制作、インタラクション実装</li>
+      <li>・Dart / Flutter：モバイルアプリ開発</li>
+      <li>・Swift / SwiftUI：iOSアプリ開発を学習・実装中</li>
+      <li>・Firebase / Supabase / Prisma：認証、データベース、ホスティング、スキーマ管理</li>
+      <li>・ESP32 / WebSocket：Webアプリとハードウェアを連携させるプロトタイプ制作</li>
+    </ul>
+
+    <h2>AI / API</h2>
+    <ul>
+      <li>・OpenAI APIを使った文章生成、画像生成、入力補助機能の試作</li>
+      <li>・Google Maps APIを使った位置情報サービスの開発</li>
+      <li>・ユーザーの入力や選択に応じて結果が変化する体験設計</li>
+    </ul>
+
+    <h2>制作スタイル</h2>
+    <ul>
+      <li>・アイデア出しから画面設計、実装、発表まで一通り担当可能</li>
+      <li>・ハッカソンでの短期開発経験が多く、素早い試作が得意</li>
+      <li>・利用者や発表を見る人を想定した情報整理と導線設計</li>
+      <li>・技術で解決する部分と、見せ方やルール設計で補う部分を整理する</li>
+      <li>・ゲーム性や体験価値が伝わる見せ方の設計</li>
+    </ul>
+
+    <h2>Currently Learning</h2>
+    <ul>
+      <li>・SwiftUIを用いたiOSアプリ開発</li>
+      <li>・AIを活用した会話体験・記録体験の設計</li>
+      <li>・使う人や見せる相手を想定したサービス設計</li>
+    </ul>
   </div>
-  <div class="content">
-    <h1>使用可能な言語,ツール</h1>
-    <br>
-    <h2>プログラミング言語</h2>
-    <ul>
-      <li>C</li>
-      <li>JavaScript</li>
-      <li>TypeScript</li>
-      <li>C#</li>
-      <li>Python</li>
-      <li>Dart</li>
-      <li>PHP</li>
-    </ul>
 
+    <script type="module" src="JS/vrm-viewer.js"></script>
+    <script src="JS/index.js" async defer></script>
 
-    <h2>Web開発</h2>
-    <ul>
-      <li>HTML</li>
-      <li>CSS</li>
-      <li>Node.js</li>
-      <li>Next.js</li>
-    </ul>
-
-    <h2>ツール・フレームワーク</h2>
-    <ul>
-      <li>Processing</li>
-      <li>Unity</li>
-      <li>Flutter</li>
-      <li>Firebase</li>
-      <li>React</li>
-      <li>Prisma</li>
-      <li>Vercel</li>
-    </ul>
-    <h2>好きなAPI</h2>
-    <ul>
-      <li>・chatGPTのAPI</li>
-      <li>・GoogleMaps</li>
-    </ul>
-
-  </div>
-  <script src="Build/kabutoPage3.loader.js"></script>
-  <script>
-    var canvas = document.querySelector("#unity-canvas");
-    if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-      // Mobile device
-      var meta = document.createElement('meta');
-      meta.name = 'viewport';
-      meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-      document.getElementsByTagName('head')[0].appendChild(meta);
-
-      canvas.style.width = "320px";
-      canvas.style.height = "200px";
-      document.body.style.textAlign = "center";
-    } else if (/mac/i.test(navigator.userAgent)) {
-      // Desktop or other device
-      canvas.style.width = "600px";
-      canvas.style.height = "375px";
-    } else {
-      canvas.style.width = "960px";
-      canvas.style.height = "600px";
-    }
-
-    createUnityInstance(document.querySelector("#unity-canvas"), {
-      dataUrl: "Build/kabutoPage3.data.unityweb",
-      frameworkUrl: "Build/kabutoPage3.framework.js.unityweb",
-      codeUrl: "Build/kabutoPage3.wasm.unityweb",
-      streamingAssetsUrl: "StreamingAssets",
-      companyName: "DefaultCompany",
-      productName: "Web3D",
-      productVersion: "0.1",
-    });
-  </script>
-  <script src="JS/index.js" async defer></script>
+    <footer class="footer">
+        <div class="footer-content md-flex md-justify-between">
+            <a href="index.html" class="footer__logo">
+                <img src="pictures/K_rogo2.png" width="180" height="80" alt="K Logo">
+            </a>
+            <ul class="footer__navi flex">
+                <li><a href="introduction.html">自己紹介</a></li>
+                <li><a href="skills.html">SKILL</a></li>
+                <li><a href="gallery.html">ギャラリー</a></li>
+            </ul>
+        </div>
+        <hr>
+        <p class="copyright">
+            © 2026 <a href="index.html">Kabuto</a> All Rights Reserved.
+        </p>
+    </footer>
 </body>
-<footer class="footer">
-  <div class="footer-content md-flex md-justify-between">
-    <a href="index.html" class="footer__logo">
-      <img src="pictures/K_rogo2.png" width="180" height="80" alt="K Logo" />
-    </a>
-    <ul class="footer__navi flex">
-      <li><a href="introduction.html">自己紹介</a></li>
-      <li><a href="skills.html">SKILL</a></li>
-      <li><a href="gallery.html">ギャラリー</a></li>
-    </ul>
-  </div>
-  <hr />
-  <p class="copyright">
-    © 2023 <a href="index.html">Kabuto</a> All Rights Reserved.
-  </p>
-</footer>
 
 </html>

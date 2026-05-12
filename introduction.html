@@ -1,149 +1,231 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="ja">
 
 <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <link rel="stylesheet" href="CSS/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>自己紹介 - かぶとの住処</title>
     <link rel="shortcut icon" type="image/png" sizes="96x96" href="pictures/favicon-96x96.png">
-    <title>ようこそ、かぶとの住処へ - 自己紹介</title>
+    <link rel="stylesheet" href="CSS/style.css?v=20260512-2">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 </head>
 
-<body
-    style="background: url('Movie/background.mp4') no-repeat center center fixed; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;">
-    <video autoplay loop muted playsinline id="bg-video">
-        <source src="Movie/background.mp4" type="video/mp4">
-    </video>
+<body>
     <div class="header-images">
-        <a href="index.html">
-            <img src="pictures/title.png" alt="Title" class="title-image">
+        <a href="index.html" class="site-home-link">
+            <span class="site-title">Kabuto Portfolio</span>
         </a>
         <div class="social-icons">
-            <a href="https://www.youtube.com/@user-py3rf8lu5t" target="_blank">
+            <a href="https://www.youtube.com/@user-py3rf8lu5t" target="_blank" rel="noopener noreferrer">
                 <img src="pictures/youtube.png" alt="youtube" class="youtube-image">
             </a>
-            <a href="https://twitter.com/Kabuto0421" target="_blank">
+            <a href="https://twitter.com/Kabuto0421" target="_blank" rel="noopener noreferrer">
                 <img src="pictures/twitter.png" alt="twitter" class="twitter-image">
             </a>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSekCt8pvi2nPJa1sdYpRITzwiwz6pBY73iSDtWFSTQgtgdBtw/viewform?usp=sf_link"
-                target="_blank">
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSekCt8pvi2nPJa1sdYpRITzwiwz6pBY73iSDtWFSTQgtgdBtw/viewform?usp=sf_link" target="_blank" rel="noopener noreferrer">
                 <img src="pictures/questionIcon.png" alt="question" class="question-image">
             </a>
-            <!-- 追加するGitHubアイコンのHTML -->
-            <a href="https://github.com/Kabuto0421" target="_blank">
+            <a href="https://github.com/Kabuto0421" target="_blank" rel="noopener noreferrer">
                 <img src="pictures/github.png" alt="github" class="github-image">
             </a>
         </div>
     </div>
 
     <h3> </h3>
+
     <div class="canvas-container">
-        <canvas id="unity-canvas" width=960 height=600 style="background: #231F20"></canvas>
+        <canvas id="unity-canvas" width="960" height="600" aria-label="3D avatar viewer"></canvas>
     </div>
+
     <div class="menu-container">
-        <img src="pictures/menuA01.png" alt="Menu A01" class="no-effect">
+        <img src="pictures/menuA01.png" alt="Menu" class="no-effect">
         <div class="menu-images">
-            <img src="pictures/menuA02.png" alt="Menu A02" class="shift-left-1" id="menuA02"
+            <img src="pictures/menuA02.png" alt="自己紹介" class="shift-left-1" id="menuA02"
                 onmouseover="changeImage('pictures/menuA02.png', 'menuA02')"
                 onmouseout="changeImage('pictures/menuA02.png', 'menuA02')" onclick="navigateToIntro()">
-            <img src="pictures/menuB03.png" alt="Menu B03" class="shift-left-2" id="menuB03"
+            <img src="pictures/menuB03.png" alt="SKILL" class="shift-left-2" id="menuB03"
                 onmouseover="changeImage('pictures/menuA03.png', 'menuB03')"
                 onmouseout="changeImage('pictures/menuB03.png', 'menuB03')" onclick="navigateToSkills()">
-            <img src="pictures/menuB04.png" alt="Menu B04" class="shift-left-3" id="menuB04"
+            <img src="pictures/menuB04.png" alt="ギャラリー" class="shift-left-3" id="menuB04"
                 onmouseover="changeImage('pictures/menuA04.png', 'menuB04')"
                 onmouseout="changeImage('pictures/menuB04.png', 'menuB04')" onclick="navigateToGallery()">
         </div>
     </div>
-    <script src="Build/kabutoPage3.loader.js"></script>
-    <script>
-        var canvas = document.querySelector("#unity-canvas");
-        if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-            // Mobile device
-            var meta = document.createElement('meta');
-            meta.name = 'viewport';
-            meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-            document.getElementsByTagName('head')[0].appendChild(meta);
 
-            canvas.style.width = "375px";
-            canvas.style.height = "250px";
-            document.body.style.textAlign = "center";
-        } else if (/mac/i.test(navigator.userAgent)) {
-            // Desktop or other device
-            canvas.style.width = "600px";
-            canvas.style.height = "375px";
-        } else {
-            canvas.style.width = "960px";
-            canvas.style.height = "600px";
-        }
+<div class="content">
+        <h1>自己紹介</h1>
 
-        createUnityInstance(document.querySelector("#unity-canvas"), {
-            dataUrl: "Build/kabutoPage3.data.unityweb",
-            frameworkUrl: "Build/kabutoPage3.framework.js.unityweb",
-            codeUrl: "Build/kabutoPage3.wasm.unityweb",
-            streamingAssetsUrl: "StreamingAssets",
-            companyName: "DefaultCompany",
-            productName: "Web3D",
-            productVersion: "0.1",
-        });
-    </script>
-
-    <div class="content">
         <h2>基本情報</h2>
         <ul>
-            <li>特徴：未来的なカブトムシと融合した高専生のVTuber</li>
-            <li>趣味：プログラミング、モノづくり、歴史研究</li>
-            <li>識別コード：KABUTO-23X-IT</li>
-            <li>コミュニティ：Iwaken Lab.所属</li>
-        </ul>
-        <h2>自己紹介</h2>
-        <p>20歳(2025-5/03時点)の高専5年生です。ネット上では「かぶと」という名前で過ごしています。</p>
-        <p>相棒のKABUTO-23X-IT(GPTsで作成) とともにものづくりをしています。</p>
-        <img src="pictures/kabutoTalking.png" width="800" height="360">
-        <h2>一言</h2>
-        <p>夢がありません。なので夢を探しています。夢を模索する技術探求者：Web / Unity / AIを駆使し、Vかぶとを通じて未踏の創造を毎日追求するクリエイター、それが現段階の「かぶと」です。
-        </p>
-        <h2>今後の予定及びプロジェクト</h2>
-        <ul>
-            <li>・手軽に行えるマルチストラテジー戦争ゲーム</li>
-            <li>・<a href="https://x.com/kosenconf182" target="_blank">第一回VR高専カンファレンス</a></li>
-            <li>・Vかぶとが暴れ回れるような部屋</li>
-            <li>・少人数〜大人数までのクイズにおいてイベント性を上げるようなアプリ</li>
-            <li>・その他：(視聴者に共有していきたい私の思う面白いコンテンツ)</li><br>
-        </ul>
-        <h2>これまでに出場したコンテスト</h2>
-        <ul>
-            <li>・高専インカレチャレンジ第一弾、第三弾</li>
-            <li>・kosen hack u 2022</li>
-            <li>・高専プロコン課題部門</li>
-            <li>・ヒーローズリーグ決勝進出</li>
-            <li>・M5stackものづくりハッカソン</li>
-            <li>・シビックテックハッカソンin鯖江</li>
-            <li>・技育CAMPVol.2(2024) 努力賞 受賞</li>
-            <li>・技育CAMPVol.4(2024) 努力賞 受賞</li>
-            <li>・技育博Vol.2(2024) 株式会社DeNA賞,株式会社ゆめみ賞のダブル受賞</li>
-            <li>・第一回ハッカソン「AsianChallengeCup」最優秀賞</li>
+            <li>名前：石野 雄大 / かぶと</li>
+            <li>年齢：21歳（2026年5月12日時点）</li>
+            <li>所属：福井大学 工学部 電気電子情報工学科 3年</li>
+            <li>出身：石川工業高等専門学校 電子情報工学科</li>
+            <li>関心領域：Webアプリ開発 / iOSアプリ開発 / AI活用 / UI・UX設計 / Unity・VRChatワールド制作</li>
         </ul>
 
-        <h1>希望プロジェクト随時募集中</h1>
-        <h3>何かあればお問い合わせフォームまたはYoutube,Twitter等からお願いします。</h3>
-    </div>
-    <script src="JS/index.js" async defer></script>
-</body>
-<footer class="footer">
-    <div class="footer-content md-flex md-justify-between">
-        <a href="index.html" class="footer__logo">
-            <img src="pictures/K_rogo2.png" width="180" height="80" alt="K Logo" />
-        </a>
-        <ul class="footer__navi flex">
-            <li><a href="introduction.html">自己紹介</a></li>
-            <li><a href="skills.html">SKILL</a></li>
-            <li><a href="gallery.html">ギャラリー</a></li>
+        <h2>Profile</h2>
+        <p>
+            石川工業高等専門学校 電子情報工学科で5年間学ぶ中で、個人開発、ハッカソン、コンテストを通して、WebアプリやAIを活用したサービス、Unityを用いたインタラクティブコンテンツなどを制作してきました。
+            現在は福井大学 工学部 電気電子情報工学科に進み、これまでの制作経験を土台にしながら、アプリ開発や体験設計についてさらに学んでいます。
+        </p>
+        <p>
+            制作では、アイデア出し、画面設計、実装、発表までを一通り経験してきました。
+            自分の強みは、単に機能を増やすのではなく、「誰に見せるのか」「どのような場面で使われるのか」「どこを技術で解決し、どこを見せ方や体験設計で補うのか」を考えながら形にしていく点です。
+        </p>
+        <p>
+            Web、AI、Unity、位置情報、カメラなど、複数の技術を組み合わせた制作に関心があります。
+            思いついたものを素早く試作するだけでなく、見せる相手や対象となる人を想像しながら、実際のユースケースに合わせて方向性を決めていくことを大切にしています。
+        </p>
+        <p>
+            また、WebアプリやAIサービスだけでなく、ハードウェアとソフトウェアを組み合わせた制作や、技術を学ぶための教材的なプロトタイプにも取り組んできました。
+            目的に対して最初から一つの技術に決め打ちするのではなく、誰が触るのか、どの場面で使われるのか、何を体験として伝えたいのかを考えながら、必要な技術や見せ方を選ぶことを大切にしています。
+        </p>
+
+        <h2>制作で大切にしていること</h2>
+        <ul>
+            <li>・アイデアを抽象的なままにせず、まず触れる形にすること</li>
+            <li>・ユーザーや発表を見る人が、どこで迷うのかを考えること</li>
+            <li>・技術で解決する部分と、見せ方やルール設計で補う部分を整理すること</li>
+            <li>・技術の面白さだけでなく、体験として伝わる形にすること</li>
+            <li>・短期間でも完成形を意識し、発表できる状態まで持っていくこと</li>
         </ul>
+
+        <h2>プロトタイプ制作で意識してきたこと</h2>
+
+        <h3>ImagineQuest</h3>
+        <p>
+            ユーザーの入力や選択によって、AIが物語や画像を生成するリアルタイム生成型アドベンチャーゲームです。
+            制作時には、生成AIの自由度を活かしながらも、ユーザーが何をすればよいか分からなくならないように、選択肢や結果表示の流れを意識しました。
+            AIの出力をただ見せるのではなく、ゲームとして進行している感覚を保つことを重視しました。
+        </p>
+
+        <h3>ふぉとぴっくる / 金沢フォト漬け</h3>
+        <p>
+            ランダムに指定された地点へ実際に行き、ストリートビューに近い構図の写真を撮ることでスコアを得る位置情報ゲームです。
+            観光地として有名な場所だけでなく、普段は通り過ぎてしまうような場所にも「探す」「撮る」「比べる」という体験を与えることで、その地域を楽しく感じられるようにすることを目指しました。
+        </p>
+        <p>
+            制作時には、単に場所を紹介するのではなく、ユーザーの行動によって地域の見え方が変わる体験を意識しました。
+            何気ない場所に付加価値を与え、地域そのものを遊びのフィールドに変えることを考えたプロジェクトです。
+        </p>
+
+        <h3>Parrotter</h3>
+        <p>
+            SNS上の文章や画像を、より社交的な表現へ変換することをテーマにしたプロトタイプです。
+            単にAIで文章を書き換えるだけでなく、投稿がどのように受け取られるか、どのような表現なら摩擦を減らせるかを考えながら制作しました。
+            技術的な変換機能と、コミュニケーションの見せ方の両方を意識したプロジェクトです。
+        </p>
+
+        <h3>数刃</h3>
+        <p>
+            数学問題を素早く解くことをテーマにしたWebアプリです。
+            制作時には、問題に取り組むテンポや、結果が返ってくるまでの気持ちよさを意識しました。
+            学習系の要素を持ちながらも、まず触ってすぐ遊べる体験にすることを重視しました。
+        </p>
+
+        <h3>VRChatワールド制作</h3>
+        <p>
+            VRChat上でのイベント空間や、参加者同士の交流を促すギミック制作に取り組んできました。
+            単に空間を作るだけでなく、参加者がどこに集まり、どう移動し、どのように交流するかを想像しながら、空間構成やインタラクションを考えています。
+        </p>
+
+        <h3>電光知動</h3>
+        <p>
+            授業内のシステム設計演習で制作した、ハードウェアとソフトウェアを組み合わせた作品です。
+            ブラウザ上でスタート地点、ゴール地点、障害物を設定し、最短経路を計算して、LEDの点灯や自走車の動きに反映する仕組みを作りました。
+        </p>
+        <p>
+            制作時には、Web画面上の操作が現実の光や車の動きにつながるように、画面表示、経路探索、リアルタイム通信、ESP32による制御を一つの体験としてつなげることを意識しました。
+            「画面で分かる」だけでなく、「実際に動いて伝わる」形にした点が特徴です。
+        </p>
+
+        <h3>GitHubIkenBattle</h3>
+        <p>
+            GitHubや共同開発の流れを学ぶために制作した、キャラクターバトル形式の教材的プロトタイプです。
+            参加者がそれぞれキャラクタークラスを追加し、ステータスや見た目を設定することで、クラス設計や共同編集の流れを体験できる構成にしました。
+        </p>
+        <p>
+            ただ説明を聞くだけではなく、自分のキャラクターを作る過程で自然にGitHubやプログラムの拡張に触れられるようにすることを意識しました。
+            技術を教える場面でも、対象となる人がどう手を動かせば理解しやすいかを考えながら設計しています。
+        </p>
+
+        <h3>memoryProject（制作中）</h3>
+        <p>
+            AIとの会話を長期的に扱うための記録・再利用の仕組みを試している、現在制作中のプロトタイプです。
+            現段階では、FastAPI、Streamlit、pytest、GiNZAなどを使い、ローカル環境で会話データを扱うための土台を整えています。
+        </p>
+        <p>
+            単にAI APIを呼び出すのではなく、会話の中のどの情報を残すべきか、後からどう取り出せると自然か、ユーザーにとって記憶されることがどのような体験になるかを考えながら制作しています。
+            AIを機能の一部として使うだけでなく、会話体験そのものを設計対象として扱うことを目指しています。
+        </p>
+
+        <h2>主な制作経験</h2>
+        <p>
+            ハッカソン、コンテスト、授業制作、個人開発を通して、以下のようなプロトタイプ制作に取り組んできました。
+            公開・運用中のサービスだけでなく、発表、検証、学習、制作途中のものも含まれます。
+        </p>
+        <ul>
+            <li>・リアルタイム生成型アドベンチャーゲーム「ImagineQuest」</li>
+            <li>・AIと位置情報を活用した写真撮影ゲーム「金沢フォト漬け / ふぉとぴっくる」</li>
+            <li>・SNS上の投稿をより社交的に再生成するサービス「Parrotter」</li>
+            <li>・数学をテーマにしたWebアプリ「数刃」</li>
+            <li>・VRChat上でのイベント空間・インタラクション設計</li>
+            <li>・WebアプリとESP32を連携させた経路探索・自走車制御システム「電光知動」</li>
+            <li>・GitHubや共同開発を学ぶための教材的プロトタイプ「GitHubIkenBattle」</li>
+            <li>・AIとの会話記録・長期記憶を扱うプロトタイプ「memoryProject」（制作中）</li>
+        </ul>
+
+        <h2>コンテスト・受賞歴</h2>
+        <ul>
+            <li>・高専インカレチャレンジ 第一弾 / 第三弾 出場</li>
+            <li>・Kosen Hack U 2022 出場</li>
+            <li>・高専プロコン 課題部門 出場</li>
+            <li>・ヒーローズリーグ 決勝進出</li>
+            <li>・M5Stackものづくりハッカソン 出場</li>
+            <li>・シビックテックハッカソン in 鯖江 出場</li>
+            <li>・技育CAMP Vol.2 2024 努力賞 受賞</li>
+            <li>・技育CAMP Vol.4 2024 努力賞 受賞</li>
+            <li>・技育博 Vol.2 2024 株式会社DeNA賞 / 株式会社ゆめみ賞 受賞</li>
+            <li>・第一回ハッカソン「Asian Challenge Cup」最優秀賞 受賞</li>
+        </ul>
+
+        <h2>現在の方向性</h2>
+        <p>
+            これまでは、ハッカソンや個人開発を通して、短期間でアイデアを形にする経験を多く積んできました。
+            今後はその試作力に加えて、より分かりやすい画面設計、保守しやすい実装、使う人や見せる相手に合わせたサービス設計にも力を入れていきたいと考えています。
+        </p>
+        <p>
+            Webアプリ、AI、ハードウェア制御、教材的プロトタイプなど、制作してきたものの分野は一つに限られていません。
+            その分、目的や対象に合わせて技術を選び、見せ方や使う流れまで含めて形にする力を伸ばしていきたいと考えています。
+        </p>
+        <p>
+            「面白そう」で終わらせず、相手や場面に合わせて、技術・見せ方・使う流れを組み合わせながら形にできる制作者を目指しています。
+        </p>
     </div>
-    <hr />
-    <p class="copyright">
-        © 2023 <a href="index.html">Kabuto</a> All Rights Reserved.
-    </p>
-</footer>
+
+    <script type="module" src="JS/vrm-viewer.js"></script>
+    <script src="JS/index.js" async defer></script>
+
+    <footer class="footer">
+        <div class="footer-content md-flex md-justify-between">
+            <a href="index.html" class="footer__logo">
+                <img src="pictures/K_rogo2.png" width="180" height="80" alt="K Logo">
+            </a>
+            <ul class="footer__navi flex">
+                <li><a href="introduction.html">自己紹介</a></li>
+                <li><a href="skills.html">SKILL</a></li>
+                <li><a href="gallery.html">ギャラリー</a></li>
+            </ul>
+        </div>
+        <hr>
+        <p class="copyright">
+            © 2026 <a href="index.html">Kabuto</a> All Rights Reserved.
+        </p>
+    </footer>
+</body>
 
 </html>

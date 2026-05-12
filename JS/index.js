@@ -17,6 +17,10 @@ window.onload = function() {
 var isMac = navigator.platform.toUpperCase().indexOf('Mac') >= 0;
 var video = document.getElementById('bg-video');
 
+if (!video) {
+    return;
+}
+
 if(isMac){
     video.pause();
 }

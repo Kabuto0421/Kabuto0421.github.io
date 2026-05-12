@@ -1,7 +1,7 @@
 # kabutoPage
 
-このリポジトリは、かぶと（Kabuto）が管理している Webページ用のプロジェクトです。  
-主に Unity WebGL ビルドのコンテンツを含み、HTML/CSS/JavaScript によるページ構成と組み合わせて公開しています。
+このリポジトリは、かぶと（Kabuto）が管理している Web ページ用のプロジェクトです。
+HTML/CSS/JavaScript によるページ構成と、Three.js + three-vrm による VRM アバター表示を組み合わせて公開しています。
 
 ## リポジトリ構成
 ```
@@ -15,10 +15,13 @@
 │   ├── kabutoPage3.framework.js.unityweb
 │   ├── kabutoPage3.loader.js
 │   └── kabutoPage3.wasm.unityweb
+├── assets/
+│   └── kabutomodel.vrm
 ├── CSS/
 │   └── style.css
 ├── JS/
-│   └── index.js
+│   ├── index.js
+│   └── vrm-viewer.js
 ├── Movie/
 │   └── background.mp4
 ├── README.md
@@ -35,29 +38,31 @@
 
 ### 主なディレクトリ・ファイル
 
-- **Build/**  
-  Unity WebGL 用にビルドされたファイル群です。  
+- **Build/**
+  以前の Unity WebGL 用ビルドファイル群です。現在の各ページでは直接読み込んでいません。
   - `kabutoPage3.data.unityweb` / `kabutoPage3.framework.js.unityweb` / `kabutoPage3.wasm.unityweb` / `kabutoPage3.loader.js` など
-- **CSS/**  
+- **assets/**
+  Web ページで読み込むモデルなどのアセットを配置します。現在は `kabutomodel.vrm` を使用しています。
+- **CSS/**
   サイトのデザインを管理するスタイルシート (`style.css`) が含まれます。
-- **JS/**  
-  JavaScript のスクリプトを配置しています (`index.js` など)。
-- **Movie/**  
-  背景動画などのメディアファイル。  
-- **pictures/**  
+- **JS/**
+  JavaScript のスクリプトを配置しています。`index.js` はページ遷移などの基本操作、`vrm-viewer.js` は VRM アバター表示を担当します。
+- **Movie/**
+  背景動画などのメディアファイル。
+- **pictures/**
   アイコンやボタン、タイトル画像などのリソースファイルを格納しています。
-- **gallery.html / index.html / introduction.html / skills.html**  
-  Web ページ本体の HTML ファイルです。Unity WebGL のコンテンツを埋め込み、背景動画や画像等を組み合わせてサイトとして公開しています。
+- **gallery.html / index.html / introduction.html / skills.html**
+  Web ページ本体の HTML ファイルです。VRM アバター表示、背景動画、画像等を組み合わせてサイトとして公開しています。
 
 ---
 
 ## 特徴
 
-- **Unity WebGL の埋め込み**  
-  Unity で作成したコンテンツを Web ページ内に組み込む形で公開し、3D/2D の動的コンテンツをブラウザから閲覧できます。
-- **HTML/CSS/JavaScript**  
-  ページ構成やスタイリング、動的なページ操作は一般的な Web 技術で管理しています。  
-- **レスポンシブ対応**  
+- **VRM アバター表示**
+  Three.js と three-vrm を使い、ブラウザ上で VRM モデルを表示します。マウス位置に合わせた視線・頭部の動き、待機モーション、表情変化を実装しています。
+- **HTML/CSS/JavaScript**
+  ページ構成やスタイリング、動的なページ操作は一般的な Web 技術で管理しています。
+- **レスポンシブ対応**
   PC やモバイル端末の画面サイズに合わせた調整を CSS や JavaScript で実施しています。
 
 ---
