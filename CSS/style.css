@@ -1913,3 +1913,10 @@ a:hover > .alakazar-word svg {
     transform: translate(-50%, -50%) scale(1) rotate(720deg);
   }
 }
+
+/* Reaction lines are voiced by the alter ego KABUTO-CHRONOS. */
+.guide-box.is-chronos .guide-box__name {
+  color: #ff5a74;
+  border-color: #ff5a74;
+  text-shadow: 0 0 8px rgba(255, 90, 116, 0.6);
+}

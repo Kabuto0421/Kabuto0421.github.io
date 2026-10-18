@@ -34,6 +34,9 @@ if (!guideBox) {
   stage.appendChild(guideBox);
 }
 const guideText = guideBox.querySelector(".guide-box__text");
+const guideName = guideBox.querySelector(".guide-box__name");
+// Reactions are voiced by an alter ego with its own name tag.
+const SPEAKERS = { kabuto: "かぶと", chronos: "KABUTO-CHRONOS" };
 guideBox.setAttribute("aria-live", "polite");
 
 const talkForm = document.createElement("form");
@@ -169,6 +172,13 @@ let lastCurious = -Infinity;
 let lastDizzy = -Infinity;
 let pokes = [];
 let pokeLockUntil = 0;
+let angryUntil = 0;
+let walkFrom = 0;
+let walkX = 0;
+let walkTarget = 0;
+let walkPauseUntil = 0;
+let facing = 0;
+let nextAngerMark = 0;
 let lastFlashSurprise = -Infinity;
 let calmTimer = 0;
 let spin = [];
@@ -291,7 +301,11 @@ function getBone(vrm, name) {
 }
 
 // Poses per expression: rotations (x, y, z radians) of normalized humanoid bones.
-const POSE_BONES = ["spine", "chest", "neck", "head", "leftUpperArm", "rightUpperArm", "leftLowerArm", "rightLowerArm"];
+const POSE_BONES = [
+  "spine", "chest", "neck", "head",
+  "leftUpperArm", "rightUpperArm", "leftLowerArm", "rightLowerArm",
+  "leftUpperLeg", "rightUpperLeg", "leftLowerLeg", "rightLowerLeg",
+];
 const ZERO = [0, 0, 0];
 const REST = {
   leftUpperArm: [-0.08, 0, -0.95],
@@ -425,7 +439,7 @@ function calmDown(after) {
 
 function sayReaction(text) {
   if (!isTalkMode) {
-    say(text);
+    say(text, undefined, "chronos");
   }
 }
 
@@ -466,9 +480,13 @@ function poke() {
   fx.clear();
   if (pokes.length >= 5) {
     pokes = [];
-    // Stay angry (and ignore clicks) until the rant has finished typing.
-    const angryFor = speechDuration(LINES.poke5) + 1500;
+    // Stays angry for 20s, stomping back and forth with anger marks; clicks are ignored meanwhile.
+    const angryFor = 20000;
     pokeLockUntil = now + angryFor;
+    angryUntil = now + angryFor;
+    walkFrom = now + 900;
+    walkTarget = walkRange();
+    nextAngerMark = now + 1800;
     setExpression("angry", { force: true });
     freezeUntil = now + 700;
     sayReaction(LINES.poke5);
@@ -482,6 +500,19 @@ function poke() {
     if (pokes.length === 1) sayReaction(LINES.poke1);
     calmDown(2500);
   }
+}
+
+// Half the width the avatar can pace within, in world units, at its distance from the camera.
+function walkRange() {
+  if (!modelBounds) return 0;
+  const distance = camera.position.distanceTo(controls.target);
+  const halfWidth = distance * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * camera.aspect;
+  return Math.max(0, halfWidth * 0.45 - modelBounds.size.x * 0.2);
+}
+
+function stopAngryWalk() {
+  angryUntil = 0;
+  pokeLockUntil = 0;
 }
 
 function curious() {
@@ -500,11 +531,15 @@ function containerOnScreen() {
   return rect.bottom > 0 && rect.top < window.innerHeight;
 }
 
-function say(text, expression) {
+function say(text, expression, speaker = "kabuto") {
   const next = String(text ?? "").trim();
   if (!next || (next === speechText && isSpeaking)) {
     return;
   }
+  if (guideName) {
+    guideName.textContent = SPEAKERS[speaker] ?? SPEAKERS.kabuto;
+  }
+  guideBox.classList.toggle("is-chronos", speaker === "chronos");
 
   speechText = next;
   speechChars = Array.from(next);
@@ -579,6 +614,35 @@ function updatePose(elapsed, delta, now) {
   const gesture = (now < dizzyUntil ? GESTURES.dizzy : GESTURES[mode])?.(t) ?? {};
   tilt += ((now < tiltUntil ? 0.22 : 0) - tilt) * 0.1;
 
+  // Angry walk: pace between ±range, pausing at each end; afterwards walk back to the middle.
+  let walking = false;
+  if (!frozen && modelBounds) {
+    const pacing = now < angryUntil && now >= walkFrom;
+    const target = pacing ? walkTarget : 0;
+    const speed = modelBounds.size.y * 0.42 * delta;
+    if (now >= walkPauseUntil && Math.abs(target - walkX) > speed) {
+      walkX += Math.sign(target - walkX) * speed;
+      walking = true;
+    } else if (pacing && now >= walkPauseUntil) {
+      walkX = target;
+      walkTarget = -Math.sign(target || 1) * walkRange();
+      walkPauseUntil = now + 550;
+      fx.spawn("angry");
+      nextAngerMark = now + 1700;
+    } else if (!pacing) {
+      walkX += (target - walkX) * 0.2;
+    }
+  }
+  const walkDir = Math.sign((now < angryUntil && now >= walkFrom ? walkTarget : 0) - walkX);
+  facing += ((walking ? walkDir * 0.95 : 0) - facing) * 0.15;
+  const stride = walking ? Math.sin(t * 9) : 0;
+  const steps = {
+    leftUpperLeg: [stride * 0.5, 0, 0],
+    rightUpperLeg: [-stride * 0.5, 0, 0],
+    leftLowerLeg: [Math.max(0, stride) * 0.7, 0, 0],
+    rightLowerLeg: [Math.max(0, -stride) * 0.7, 0, 0],
+  };
+
   for (const name of POSE_BONES) {
     const node = bones[name];
     if (!node) continue;
@@ -589,7 +653,7 @@ function updatePose(elapsed, delta, now) {
       current.y += (y - current.y) * 0.14;
       current.z += (z - current.z) * 0.14;
     }
-    const [gx, gy, gz] = gesture[name] ?? ZERO;
+    const [gx, gy, gz] = steps[name] ?? gesture[name] ?? ZERO;
     let rx = current.x + gx;
     let ry = current.y + gy;
     let rz = current.z + gz;
@@ -607,8 +671,10 @@ function updatePose(elapsed, delta, now) {
   }
 
   const sway = Math.sin(t * 1.6);
-  currentVrm.scene.rotation.y = sway * 0.045 + lookCurrent.x * 0.1;
-  let y = Math.sin(t * 2.1) * 0.006;
+  currentVrm.scene.rotation.y = facing + (walking ? 0 : sway * 0.045 + lookCurrent.x * 0.1);
+  currentVrm.scene.position.x = walkX;
+  shadow.position.x = (modelBounds?.center.x ?? 0) + walkX;
+  let y = Math.sin(t * 2.1) * 0.006 + (walking ? Math.abs(stride) * modelBounds.size.y * 0.012 : 0);
   if (hopAt && now >= hopAt) {
     const progress = (now - hopAt) / 320;
     if (progress >= 1) {
@@ -642,6 +708,11 @@ function updateReactions(now) {
 
   if (document.hidden || isTalkMode) {
     return;
+  }
+
+  if (now < angryUntil && now >= nextAngerMark) {
+    fx.spawn("angry");
+    nextAngerMark = now + 1700;
   }
 
   // Doze off after a long quiet spell; Zz while asleep.
@@ -722,6 +793,7 @@ controlsPanel.addEventListener("click", (event) => {
 
   if (button.dataset.expression) {
     wake();
+    stopAngryWalk();
     setExpression(button.dataset.expression, { force: true });
   }
 });
@@ -796,6 +868,7 @@ document.addEventListener("visibilitychange", () => {
   lastActivity = performance.now();
   sleeping = false;
   if (hiddenAt && away > 8000 && currentVrm && !isTalkMode) {
+    stopAngryWalk();
     setExpression("happy", { force: true });
     sayReaction(LINES.welcomeBack);
     calmDown(3000);
@@ -808,7 +881,8 @@ document.addEventListener("pointerleave", () => {
 
 // Other scripts (menu hover, gallery cards) make the guide speak.
 document.addEventListener("guide:say", (event) => {
-  if (!isTalkMode) {
+  // Menu lines wait while KABUTO-CHRONOS is on its angry walk.
+  if (!isTalkMode && performance.now() >= angryUntil) {
     say(event.detail?.text, event.detail?.expression);
   }
 });
