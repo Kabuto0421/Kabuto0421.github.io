@@ -18,6 +18,7 @@ HTML/CSS/JavaScript によるページ構成と、Three.js + three-vrm による
 ├── assets/
 │   └── kabutomodel.vrm
 ├── CSS/
+│   ├── alakazar.css
 │   └── style.css
 ├── JS/
 │   ├── index.js
@@ -28,11 +29,13 @@ HTML/CSS/JavaScript によるページ構成と、Three.js + three-vrm による
 ├── StreamingAssets/
 │   └── UnityServicesProjectConfiguration.json
 ├── Thumbs.db
+├── alakazar.html
 ├── gallery.html
 ├── index.html
 ├── introduction.html
 ├── pictures/
-│   ├── 各種画像ファイル（ロゴ、アイコン、スクリーンショットなど）
+│   ├── alakazar/（ALAKAZARのサムネイルとゲーム画面）
+│   └── 各種画像ファイル（ロゴ、アイコン、スクリーンショットなど）
 └── skills.html
 ```
 
@@ -44,15 +47,16 @@ HTML/CSS/JavaScript によるページ構成と、Three.js + three-vrm による
 - **assets/**
   Web ページで読み込むモデルなどのアセットを配置します。現在は `kabutomodel.vrm` を使用しています。
 - **CSS/**
-  サイトのデザインを管理するスタイルシート (`style.css`) が含まれます。
+  サイト共通の `style.css` と、ALAKAZAR の作品紹介に使う `alakazar.css` が含まれます。
 - **JS/**
   JavaScript のスクリプトを配置しています。`index.js` はページ遷移などの基本操作、`vrm-viewer.js` は VRM アバター表示を担当します。
 - **Movie/**
   背景動画などのメディアファイル。
 - **pictures/**
   アイコンやボタン、タイトル画像などのリソースファイルを格納しています。
-- **gallery.html / index.html / introduction.html / skills.html**
-  Web ページ本体の HTML ファイルです。VRM アバター表示、背景動画、画像等を組み合わせてサイトとして公開しています。
+- **gallery.html / alakazar.html / index.html / introduction.html / skills.html**
+  Web ページ本体の HTML ファイルです。ページごとに VRM アバター表示や画像等を組み合わせてサイトとして公開しています。
+  `gallery.html` から `alakazar.html` の作品紹介へ移動できます。
 
 ---
 
