@@ -369,6 +369,31 @@ img {
   image-rendering: pixelated;
 }
 
+.vrm-credit {
+  position: absolute;
+  right: 18px;
+  bottom: 12px;
+  z-index: 4;
+  margin: 0;
+  padding: 5px 8px;
+  color: var(--cream);
+  background: rgba(4, 8, 18, 0.82);
+  border-left: 2px solid var(--cyan);
+  font-family: var(--font-dot);
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+.vrm-credit a {
+  color: var(--hi);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.vrm-credit a:hover {
+  color: var(--cream);
+}
+
 .vrm-status {
   position: absolute;
   left: 50%;
@@ -1690,6 +1715,14 @@ img {
     bottom: auto;
     width: auto;
     margin-top: 150px;
+  }
+
+  .vrm-credit {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    align-self: flex-end;
+    margin-top: 12px;
   }
 
   .guide-box__text {
