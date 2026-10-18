@@ -1605,10 +1605,8 @@ img {
   }
 
   .stage--page .vrm-container {
-    right: -4%;
-    bottom: auto;
-    width: 56%;
-    height: 250px;
+    right: -6%;
+    width: 62%;
   }
 
   .title-logo__tagline {
@@ -1621,7 +1619,7 @@ img {
     left: auto;
     bottom: auto;
     width: auto;
-    margin-top: 160px;
+    margin-top: 150px;
   }
 
   .guide-box__text {
