@@ -1776,3 +1776,140 @@ a:hover > .alakazar-word svg {
 .stage-heading__word .alakazar-word svg {
   height: clamp(46px, 6vw, 78px);
 }
+
+/* Pixel reaction effects around the avatar's head (JS/vrm-fx.js) */
+.vrm-fx {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.vrm-fx__p {
+  position: absolute;
+  line-height: 0;
+  transform: translate(-50%, -50%);
+  animation-fill-mode: both;
+}
+
+.vrm-fx__p svg {
+  display: block;
+  filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.45));
+}
+
+.vrm-fx__p--pop {
+  animation: fx-pop 1500ms steps(3) both;
+}
+
+.vrm-fx__p--float {
+  animation: fx-float 1900ms steps(4) both;
+}
+
+.vrm-fx__p--pulse {
+  animation: fx-pulse 1800ms steps(2) both;
+}
+
+.vrm-fx__p--drip {
+  animation: fx-drip 1800ms steps(4) both;
+}
+
+.vrm-fx__p--spin {
+  animation: fx-spin 2200ms steps(16) both;
+}
+
+@keyframes fx-pop {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+  }
+  10% {
+    transform: translate(-50%, -50%) scale(1.4);
+  }
+  18%,
+  80% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -85%) scale(1);
+  }
+}
+
+@keyframes fx-float {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0);
+  }
+  12% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+  40% {
+    transform: translate(-30%, -110%) scale(1);
+  }
+  70% {
+    opacity: 1;
+    transform: translate(-70%, -170%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -240%) scale(1);
+  }
+}
+
+@keyframes fx-pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+  }
+  10%,
+  40%,
+  70% {
+    transform: translate(-50%, -50%) scale(1.3);
+  }
+  25%,
+  55%,
+  85% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes fx-drip {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -90%);
+  }
+  15% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+  85% {
+    opacity: 1;
+    transform: translate(-50%, 70%);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 100%);
+  }
+}
+
+@keyframes fx-spin {
+  0% {
+    transform: translate(-50%, -50%) scale(0) rotate(0deg);
+  }
+  12% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) rotate(90deg);
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1) rotate(720deg);
+  }
+}
