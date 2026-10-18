@@ -54,7 +54,6 @@
 .alakazar-feature__title a {
   color: var(--cream);
   text-decoration: none;
-  text-shadow: 3px 3px 0 var(--ink), 6px 6px 0 rgba(255, 79, 139, 0.45);
 }
 
 /* The whole feature card is clickable through the title link. */
@@ -181,7 +180,8 @@
 }
 
 .alakazar-hero__lead {
-  margin: 18px 0 14px;
+  margin: 14px 0 14px;
+  font-weight: 400;
   color: var(--cream);
   font-family: var(--font-dot);
   font-size: clamp(20px, 2.6vw, 28px);

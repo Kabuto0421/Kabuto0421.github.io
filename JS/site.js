@@ -28,6 +28,43 @@ function rowPath(rows, offsetX, offsetY, grow = 0) {
   return d;
 }
 
+// Tall condensed wordmark in the style of the ALAKAZAR title logo (cream, dark outline, red glow).
+const ALAKAZAR_GLYPHS = {
+  A: ["....##....", "....##....", "...####...", "...####...", "...#..#...", "..##..##..", "..##..##..", "..##..##..", "..##..##..", ".##....##.", ".##....##.", ".########.", ".########.", "##......##", "##......##", "##......##", "##......##", "##......##"],
+  L: ["##......", "##......", "##......", "##......", "##......", "##......", "##......", "##......", "##......", "##......", "##......", "##......", "##......", "##......", "##......", "##......", "########", "########"],
+  K: ["##.....##", "##....##.", "##....##.", "##...##..", "##...##..", "##..##...", "##..##...", "##.##....", "####.....", "####.....", "##.##....", "##..##...", "##..##...", "##...##..", "##...##..", "##....##.", "##....##.", "##.....##"],
+  Z: ["#########", "#########", "......##.", "......##.", ".....##..", ".....##..", "....##...", "....##...", "...##....", "...##....", "..##.....", "..##.....", ".##......", ".##......", "##.......", "##.......", "#########", "#########"],
+  R: ["#######..", "########.", "##.....##", "##.....##", "##.....##", "##.....##", "##.....##", "########.", "#######..", "##..##...", "##..##...", "##...##..", "##...##..", "##....##.", "##....##.", "##.....##", "##.....##", "##.....##"],
+};
+
+function buildAlakazarWord(target) {
+  const word = "ALAKAZAR";
+  const gap = 3;
+  let x = 1;
+  let outline = "";
+  let fill = "";
+  let shade = "";
+  for (const char of word) {
+    const glyph = ALAKAZAR_GLYPHS[char];
+    outline += rowPath(glyph, x, 1, 1);
+    fill += rowPath(glyph, x, 1);
+    glyph.forEach((row, y) => {
+      [...row].forEach((cell, cx) => {
+        if (cell === "#" && row[cx + 1] !== "#") shade += `M${x + cx + 0.68} ${y + 1}h0.32v1h-0.32z`;
+      });
+    });
+    x += glyph[0].length + gap;
+  }
+  const width = x - gap + 1;
+  const height = ALAKAZAR_GLYPHS.A.length + 2;
+  target.innerHTML = `
+    <svg viewBox="0 0 ${width} ${height}" width="${width}" height="${height}" aria-hidden="true" focusable="false">
+      <path class="aw-outline" d="${outline}"/>
+      <path class="aw-fill" d="${fill}"/>
+      <path class="aw-shade" d="${shade}"/>
+    </svg>`;
+}
+
 function buildPixelLogo(target) {
   const word = target.dataset.pixelLogo || "KABUTO";
   const advance = 9;
@@ -279,6 +316,7 @@ function setupReveal() {
   targets.forEach((target) => observer.observe(target));
 }
 
+document.querySelectorAll("[data-alakazar-word]").forEach(buildAlakazarWord);
 document.querySelectorAll("[data-pixel-logo]").forEach((target) => {
   buildPixelLogo(target);
   document.addEventListener("scene:flash", () => sweepLogo(target));

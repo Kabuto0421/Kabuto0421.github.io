@@ -768,7 +768,7 @@ img {
 .stage-heading {
   position: absolute;
   left: clamp(16px, 7vw, 120px);
-  top: 18%;
+  top: 14%;
   z-index: 3;
   margin: 0;
 }
@@ -1738,4 +1738,41 @@ img {
   background: none;
   border: 0;
   box-shadow: none;
+}
+
+/* ALAKAZAR wordmark (drawn by site.js in the style of the game's title logo) */
+.alakazar-word {
+  display: inline-block;
+  line-height: 0;
+  vertical-align: -0.1em;
+}
+
+.alakazar-word svg {
+  display: block;
+  width: auto;
+  height: 1.05em;
+  overflow: visible;
+  filter: drop-shadow(0 0 0.18em rgba(186, 46, 90, 0.85)) drop-shadow(0 0 0.5em rgba(120, 24, 64, 0.55));
+  transition: filter 120ms steps(2);
+}
+
+.aw-outline {
+  fill: #07080f;
+}
+
+.aw-fill {
+  fill: #fff6e0;
+}
+
+.aw-shade {
+  fill: #c7bda8;
+}
+
+.title-menu__item.is-selected .alakazar-word svg,
+a:hover > .alakazar-word svg {
+  filter: drop-shadow(0 0 0.2em rgba(255, 92, 140, 0.95)) drop-shadow(0 0 0.7em rgba(200, 40, 90, 0.7));
+}
+
+.stage-heading__word .alakazar-word svg {
+  height: clamp(46px, 6vw, 78px);
 }

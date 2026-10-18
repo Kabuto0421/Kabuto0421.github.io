@@ -55,7 +55,7 @@ controlsPanel.innerHTML = `
     <div class="vrm-control-group" role="group" aria-label="カメラ">
       <button class="px-chip" type="button" data-camera="full">全身</button>
       <button class="px-chip" type="button" data-camera="face">顔アップ</button>
-      <button class="px-chip" type="button" data-render-toggle aria-pressed="true">DOT</button>
+      <button class="px-chip" type="button" data-render-toggle aria-pressed="false">HD</button>
     </div>
     <p class="vrm-control-label">FACE</p>
     <div class="vrm-control-group" role="group" aria-label="表情">
@@ -152,20 +152,21 @@ const pageGuideMessages = {
   introduction: "自己紹介では、制作姿勢とこれまでの経験をまとめています。",
   skills: "SKILLでは、扱える技術と得意な作り方を整理しています。",
   gallery: "GALLERYでは、これまで作ってきた作品を紹介しています。気になるものを選んでみてください。",
+  alakazar: "ALAKAZARは、友人と二人で制作中のターン制タクティクスローグライクです。体験版も遊べます！",
 };
 const pageGuideText = pageGuideMessages[document.body.dataset.page] ?? "気になる項目を選ぶと、制作内容を見られます。";
 
 function readPixelPreference() {
   try {
-    return window.localStorage.getItem("kabuto-vrm-render") !== "hd";
+    return window.localStorage.getItem("kabuto-vrm-render-v2") === "dot";
   } catch {
-    return true;
+    return false;
   }
 }
 
 function savePixelPreference() {
   try {
-    window.localStorage.setItem("kabuto-vrm-render", pixelMode ? "dot" : "hd");
+    window.localStorage.setItem("kabuto-vrm-render-v2", pixelMode ? "dot" : "hd");
   } catch {
     // Storage can be unavailable (private mode); the toggle still works for this visit.
   }
@@ -247,13 +248,13 @@ function setControlsCollapsed(isCollapsed) {
   button.querySelector("span").textContent = isCollapsed ? "▼" : "▲";
 }
 
-function setPixelMode(next) {
+function setPixelMode(next, { save = true } = {}) {
   pixelMode = next;
   const button = controlsPanel.querySelector("[data-render-toggle]");
   button.textContent = pixelMode ? "DOT" : "HD";
   button.setAttribute("aria-pressed", String(pixelMode));
   button.classList.toggle("is-active", pixelMode);
-  savePixelPreference();
+  if (save) savePixelPreference();
   resizeRenderer();
 }
 
@@ -512,7 +513,7 @@ new ResizeObserver(resizeRenderer).observe(container);
 coarsePointer.addEventListener("change", syncTouchControls);
 
 syncTouchControls();
-setPixelMode(pixelMode);
+setPixelMode(pixelMode, { save: false });
 setActiveButton("camera", cameraMode);
 
 const loader = new GLTFLoader();
