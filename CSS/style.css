@@ -889,21 +889,21 @@ img {
   letter-spacing: 0.02em;
 }
 
-.prose .profile-lead__energy,
-.prose .profile-lead__show {
+.prose .profile-word--energy,
+.prose .profile-word--show {
   background: none;
   text-decoration-line: underline;
   text-decoration-thickness: 4px;
   text-underline-offset: 7px;
 }
 
-.prose .profile-lead__energy {
+.prose .profile-word--energy {
   color: var(--gold);
   text-decoration-color: var(--pink);
   text-shadow: 0 0 12px rgba(242, 193, 78, 0.55);
 }
 
-.prose .profile-lead__show {
+.prose .profile-word--show {
   color: var(--hi);
   text-decoration-color: var(--cyan);
   text-shadow: 0 0 12px rgba(63, 244, 255, 0.55);
