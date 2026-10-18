@@ -412,8 +412,11 @@ const LINES = {
 
 // Changing the face freezes the body for a beat (so the new face reads), then hops,
 // and pops a pixel emote next to the head.
-function setExpression(mode, { effect = true, force = false } = {}) {
-  if (!mode || (mode === expressionMode && !force)) {
+// While angry nothing else may change the face or the text; only the anger itself and its end pass.
+const isAngry = () => performance.now() < angryUntil;
+
+function setExpression(mode, { effect = true, force = false, anger = false } = {}) {
+  if (!mode || (mode === expressionMode && !force) || (isAngry() && !anger)) {
     return;
   }
   expressionMode = mode;
@@ -432,14 +435,17 @@ function setExpression(mode, { effect = true, force = false } = {}) {
   }
 }
 
-function calmDown(after) {
+function calmDown(after, { anger = false } = {}) {
+  if (isAngry() && !anger) {
+    return;
+  }
   clearTimeout(calmTimer);
-  calmTimer = setTimeout(() => setExpression("relaxed", { effect: false }), after);
+  calmTimer = setTimeout(() => setExpression("relaxed", { effect: false, anger: true }), after);
 }
 
-function sayReaction(text) {
+function sayReaction(text, { anger = false } = {}) {
   if (!isTalkMode) {
-    say(text, undefined, "chronos");
+    say(text, undefined, "chronos", anger);
   }
 }
 
@@ -480,17 +486,17 @@ function poke() {
   fx.clear();
   if (pokes.length >= 5) {
     pokes = [];
-    // Stays angry for 20s, stomping back and forth with anger marks; clicks are ignored meanwhile.
+    // Stays angry for 20s, stomping back and forth with anger marks; everything else is ignored meanwhile.
     const angryFor = 20000;
     pokeLockUntil = now + angryFor;
-    angryUntil = now + angryFor;
     walkFrom = now + 900;
     walkTarget = walkRange();
     nextAngerMark = now + 1800;
-    setExpression("angry", { force: true });
+    setExpression("angry", { force: true, anger: true });
     freezeUntil = now + 700;
-    sayReaction(LINES.poke5);
-    calmDown(angryFor);
+    sayReaction(LINES.poke5, { anger: true });
+    angryUntil = now + angryFor;
+    calmDown(angryFor + 100, { anger: true });
   } else if (pokes.length >= 3) {
     setExpression("happy", { force: true });
     sayReaction(LINES.poke3);
@@ -510,14 +516,9 @@ function walkRange() {
   return Math.max(0, halfWidth * 0.45 - modelBounds.size.x * 0.2);
 }
 
-function stopAngryWalk() {
-  angryUntil = 0;
-  pokeLockUntil = 0;
-}
-
 function curious() {
   const now = performance.now();
-  if (now - lastCurious < 2500) {
+  if (now - lastCurious < 2500 || isAngry()) {
     return;
   }
   lastCurious = now;
@@ -531,9 +532,9 @@ function containerOnScreen() {
   return rect.bottom > 0 && rect.top < window.innerHeight;
 }
 
-function say(text, expression, speaker = "kabuto") {
+function say(text, expression, speaker = "kabuto", anger = false) {
   const next = String(text ?? "").trim();
-  if (!next || (next === speechText && isSpeaking)) {
+  if (!next || (next === speechText && isSpeaking) || (isAngry() && !anger)) {
     return;
   }
   if (guideName) {
@@ -716,7 +717,7 @@ function updateReactions(now) {
   }
 
   // Doze off after a long quiet spell; Zz while asleep.
-  if (!sleeping && !isSpeaking && now - lastActivity > 30000) {
+  if (!sleeping && !isSpeaking && !isAngry() && now - lastActivity > 30000) {
     sleeping = true;
     nextSnore = now;
   }
@@ -731,7 +732,7 @@ function updateReactions(now) {
   // Staring straight up for a while: "…"
   if (lookTarget.y <= -0.95) {
     lookUpSince ||= now;
-    if (now - lookUpSince > 1200 && now - lastLookUp > 12000) {
+    if (now - lookUpSince > 1200 && now - lastLookUp > 12000 && !isAngry()) {
       lastLookUp = now;
       tiltUntil = now + 1500;
       fx.spawn("ponder");
@@ -793,7 +794,6 @@ controlsPanel.addEventListener("click", (event) => {
 
   if (button.dataset.expression) {
     wake();
-    stopAngryWalk();
     setExpression(button.dataset.expression, { force: true });
   }
 });
@@ -822,7 +822,7 @@ window.addEventListener("pointermove", (event) => {
   lastPointer = { x: event.clientX, y: event.clientY };
   spin = spin.filter((entry) => now - entry.t < 1500);
   const travelled = spin.reduce((sum, entry) => sum + entry.d, 0);
-  if (travelled > rect.width * 3.5 && now - lastDizzy > 15000 && !isTalkMode) {
+  if (travelled > rect.width * 3.5 && now - lastDizzy > 15000 && !isTalkMode && !isAngry()) {
     lastDizzy = now;
     spin = [];
     dizzyUntil = now + 2400;
@@ -867,8 +867,7 @@ document.addEventListener("visibilitychange", () => {
   const away = performance.now() - hiddenAt;
   lastActivity = performance.now();
   sleeping = false;
-  if (hiddenAt && away > 8000 && currentVrm && !isTalkMode) {
-    stopAngryWalk();
+  if (hiddenAt && away > 8000 && currentVrm && !isTalkMode && !isAngry()) {
     setExpression("happy", { force: true });
     sayReaction(LINES.welcomeBack);
     calmDown(3000);
@@ -882,7 +881,7 @@ document.addEventListener("pointerleave", () => {
 // Other scripts (menu hover, gallery cards) make the guide speak.
 document.addEventListener("guide:say", (event) => {
   // Menu lines wait while KABUTO-CHRONOS is on its angry walk.
-  if (!isTalkMode && performance.now() >= angryUntil) {
+  if (!isTalkMode) {
     say(event.detail?.text, event.detail?.expression);
   }
 });
