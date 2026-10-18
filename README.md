@@ -16,6 +16,7 @@ HTML/CSS/JavaScript によるページ構成と、Three.js + three-vrm による
 │   ├── kabutoPage3.loader.js
 │   └── kabutoPage3.wasm.unityweb
 ├── assets/
+│   ├── audio/（ALAKAZAR タイトル曲 alakazar-title.ogg / .m4a）
 │   └── kabutomodel.vrm
 ├── CSS/
 │   ├── alakazar.css
@@ -53,9 +54,9 @@ HTML/CSS/JavaScript によるページ構成と、Three.js + three-vrm による
   サイト共通の `style.css` と、ALAKAZAR の作品紹介に使う `alakazar.css` が含まれます。
 - **JS/**
   JavaScript のスクリプトを配置しています。
-  - `pixel-scene.js`：ステージ背景のドット絵（夜の街・樹液の木とカブトムシ・回路の地面・ワイヤーフレーム・稲妻）を画像を使わずに低解像度で描き、拡大表示します。
+  - `pixel-scene.js`：ステージ背景のドット絵を画像を使わずに低解像度で描き、拡大表示します。通常は KABUTO の背景（夜の街・樹液の木とカブトムシ・回路の地面・ワイヤーフレーム・稲妻）、トップのメニューで ALAKAZAR を選んでいる間だけ ALAKAZAR の背景（月夜の森と監獄都市）に切り替わります。
   - `vrm-viewer.js`：VRM アバター表示。低解像度で描いてドット絵風に表示（AVATAR メニューで DOT / HD を切替）、案内ウィンドウへのセリフ表示、表情・カメラ・会話モード。
-  - `site.js`：ドット文字ロゴ、タイトルメニュー（カーソル / ↑↓ / Enter で選択、選ぶと案内役が説明）、スクロール表示。
+  - `site.js`：ドット文字ロゴ、タイトルメニュー（カーソル / ↑↓ / Enter で選択、選ぶと案内役が説明）、ALAKAZAR 選択中のタイトル曲再生（メニュー右下の「♪ BGM」で ON/OFF。ブラウザの制限で、最初のクリックかキー操作の後から鳴ります）、スクロール表示。
 - **Movie/**
   背景動画などのメディアファイル。
 - **pictures/**

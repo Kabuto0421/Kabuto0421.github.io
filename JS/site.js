@@ -78,14 +78,135 @@ function say(text, expression) {
   document.dispatchEvent(new CustomEvent("guide:say", { detail: { text, expression } }));
 }
 
+const BGM_LOOP_START = 12; // the fanfare plays once, then the march loops from here
+
+// Switches the stage backdrop for menu items that carry data-scene-theme and plays the
+// ALAKAZAR title theme while that backdrop is up.
+function setupStageTheme(menu) {
+  const stage = menu.closest(".stage");
+  if (!stage) return () => {};
+  const toggle = menu.querySelector("[data-bgm-toggle]");
+  let audio = null;
+  let fadeTimer = 0;
+  let wantPlay = false;
+  let stageVisible = true;
+  let wasBlocked = false;
+  let enabled = true;
+  try {
+    enabled = window.localStorage.getItem("kabuto-bgm") !== "off";
+  } catch {
+    // Storage unavailable: keep the default.
+  }
+
+  const getAudio = () => {
+    if (!audio) {
+      audio = new Audio();
+      audio.preload = "auto";
+      audio.src = audio.canPlayType('audio/ogg; codecs="vorbis"')
+        ? "assets/audio/alakazar-title.ogg"
+        : "assets/audio/alakazar-title.m4a";
+      audio.volume = 0;
+      audio.addEventListener("ended", () => {
+        audio.currentTime = BGM_LOOP_START;
+        audio.play().catch(() => {});
+      });
+    }
+    return audio;
+  };
+
+  const fadeTo = (target, done) => {
+    clearInterval(fadeTimer);
+    fadeTimer = setInterval(() => {
+      const step = 0.05;
+      const diff = target - audio.volume;
+      if (Math.abs(diff) <= step) {
+        audio.volume = target;
+        clearInterval(fadeTimer);
+        done?.();
+      } else {
+        audio.volume = Math.min(1, Math.max(0, audio.volume + Math.sign(diff) * step));
+      }
+    }, 40);
+  };
+
+  const renderToggle = (blocked = false) => {
+    if (!toggle) return;
+    toggle.classList.toggle("is-blocked", blocked);
+    toggle.setAttribute("aria-pressed", String(enabled));
+    toggle.textContent = blocked ? "♪ クリックでBGM" : enabled ? "♪ BGM ON" : "♪ BGM OFF";
+  };
+
+  const update = () => {
+    if (wantPlay && enabled && stageVisible && !document.hidden) {
+      const a = getAudio();
+      a.play()
+        .then(() => {
+          renderToggle(false);
+          fadeTo(0.55);
+        })
+        // Browsers block sound until the visitor clicks or presses a key.
+        .catch(() => renderToggle(true));
+    } else {
+      renderToggle(false);
+      if (audio && !audio.paused) fadeTo(0, () => audio.pause());
+    }
+  };
+
+  const retry = () => {
+    if (wantPlay && enabled && audio?.paused) update();
+  };
+  document.addEventListener("pointerdown", retry);
+  document.addEventListener("keydown", retry);
+
+  if (toggle) {
+    const remember = () => {
+      wasBlocked = toggle.classList.contains("is-blocked");
+    };
+    toggle.addEventListener("pointerdown", remember);
+    toggle.addEventListener("keydown", remember);
+    toggle.addEventListener("click", () => {
+      // A click that only unlocked blocked audio should not also switch it off.
+      if (!wasBlocked) {
+        enabled = !enabled;
+        try {
+          window.localStorage.setItem("kabuto-bgm", enabled ? "on" : "off");
+        } catch {
+          // Storage unavailable: the choice lasts for this visit.
+        }
+      }
+      wasBlocked = false;
+      update();
+    });
+    renderToggle(false);
+  }
+
+  new IntersectionObserver((entries) => {
+    stageVisible = entries[0].isIntersecting;
+    update();
+  }).observe(stage);
+  document.addEventListener("visibilitychange", update);
+
+  let current = "kabuto";
+  return (theme = "kabuto") => {
+    if (theme === current) return;
+    current = theme;
+    stage.classList.toggle("is-theme-alakazar", theme === "alakazar");
+    stage.dispatchEvent(new CustomEvent("scene:theme", { detail: { theme } }));
+    wantPlay = theme === "alakazar";
+    update();
+  };
+}
+
 function setupMenu(menu) {
   const items = [...menu.querySelectorAll("[data-menu-item]")];
   if (!items.length) return;
   let selected = Math.max(0, items.findIndex((item) => item.classList.contains("is-selected")));
+  const setTheme = setupStageTheme(menu);
 
   const select = (index, { focus = false, speak = true } = {}) => {
     selected = (index + items.length) % items.length;
     items.forEach((item, i) => item.classList.toggle("is-selected", i === selected));
+    setTheme(items[selected].dataset.sceneTheme);
     if (focus) items[selected].focus({ preventScroll: true });
     if (speak) say(items[selected].dataset.guideText, "relaxed");
   };

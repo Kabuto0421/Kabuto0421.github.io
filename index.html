@@ -7,7 +7,7 @@
   <title>KABUTO PORTFOLIO - かぶとの住処</title>
   <meta name="description" content="かぶと（石野雄大）の制作ポートフォリオ。Webアプリ、AI活用、Unity・VRChat、ハードウェア連携などの制作と技術経験をまとめています。">
   <meta name="theme-color" content="#080b15">
-  <link rel="icon" type="image/png" href="pictures/icon/kabuto-pixel.png">
+  <link rel="icon" type="image/png" href="pictures/icon/favicon.png">
   <link rel="apple-touch-icon" href="pictures/icon/kabuto-pixel.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -40,6 +40,7 @@
   <main id="main">
     <section class="stage stage--title" aria-label="タイトル画面">
       <canvas class="pixel-scene" aria-hidden="true"></canvas>
+      <canvas class="pixel-scene pixel-scene--alt" data-theme="alakazar" data-lazy aria-hidden="true"></canvas>
       <h1 class="title-logo">
         <span class="visually-hidden">KABUTO PORTFOLIO</span>
         <!-- 文字ロゴ画像に差し替える場合: 下の span を <img src="pictures/icon/logo.png" alt=""> に置き換える（黒背景の画像はそのまま透過して見えます） -->
@@ -53,8 +54,11 @@
         <a class="title-menu__item is-selected" href="introduction.html" data-menu-item data-guide-text="制作で大切にしていることや、これまでの経歴・受賞歴を紹介しています。">自己紹介<small>PROFILE</small></a>
         <a class="title-menu__item" href="skills.html" data-menu-item data-guide-text="扱える技術と、得意な作り方を整理しています。">SKILL<small>ABILITY</small></a>
         <a class="title-menu__item" href="gallery.html" data-menu-item data-guide-text="ハッカソンや個人開発で作ってきた作品を並べています。">GALLERY<small>WORKS</small></a>
-        <a class="title-menu__item" href="alakazar.html" data-menu-item data-guide-text="友人と二人で制作中のターン制タクティクスローグライクです。体験版も公開中！">ALAKAZAR<small>GAME</small></a>
-        <p class="title-menu__hint" aria-hidden="true">↑↓ 選択　ENTER 決定</p>
+        <a class="title-menu__item" href="alakazar.html" data-menu-item data-guide-text="友人と二人で制作中のターン制タクティクスローグライクです。体験版も公開中！" data-scene-theme="alakazar">ALAKAZAR<small>GAME</small></a>
+        <div class="title-menu__foot">
+          <p class="title-menu__hint" aria-hidden="true">↑↓ 選択　ENTER 決定</p>
+          <button class="px-chip title-menu__bgm" type="button" data-bgm-toggle aria-pressed="true">♪ BGM ON</button>
+        </div>
       </nav>
       <div class="guide-box px-window" data-guide>
         <p class="guide-box__name">かぶと</p>
