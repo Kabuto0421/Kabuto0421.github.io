@@ -389,7 +389,7 @@ function getMouthShape(character) {
 const LINES = {
   poke1: "むっ、貴様か。見事な奇襲だ。褒めて使わそう。",
   poke3: "フハハ、貴様の好奇心、嫌いでないぞ。",
-  poke5: "そんなに連打するとこそがしいぞ❗️❗️限度ってものがあるんだ、全ての物事には❗️❗️",
+  poke5: "💢貴様〜〜〜❗️❓そんなに連打するとこそがしいぞ❗️❓限度ってものがあるんだ、全ての物事には❗️❗️💢 全く、最近の若者は連打すれば何かあると思ってこれみよがしに連打しおって〜〜〜❗️❓コレがいわゆる「ドパガキ」って奴なのか❗️❓",
   oddClick: "どうかしたか？我々にはそこに何もないように見えるが...",
   wake: "はっ！　眠ってなどいない。電子の海を巡回していたのだ！",
   dizzy: "ぐぬぬ…め、目が回る…！",
@@ -466,11 +466,13 @@ function poke() {
   fx.clear();
   if (pokes.length >= 5) {
     pokes = [];
-    pokeLockUntil = now + 3500;
+    // Stay angry (and ignore clicks) until the rant has finished typing.
+    const angryFor = speechDuration(LINES.poke5) + 1500;
+    pokeLockUntil = now + angryFor;
     setExpression("angry", { force: true });
     freezeUntil = now + 700;
     sayReaction(LINES.poke5);
-    calmDown(3500);
+    calmDown(angryFor);
   } else if (pokes.length >= 3) {
     setExpression("happy", { force: true });
     sayReaction(LINES.poke3);
@@ -528,6 +530,11 @@ function setTalkMode(isOpen) {
     say("喋ってほしい言葉を入れてね。");
     talkInput.focus();
   }
+}
+
+// How long the typewriter takes to show a line (same timing as updateTypewriter).
+function speechDuration(text) {
+  return Array.from(text).reduce((sum, character) => sum + ("。、,.!?！？…".includes(character) ? 160 : 42), 0);
 }
 
 function updateTypewriter(now) {
