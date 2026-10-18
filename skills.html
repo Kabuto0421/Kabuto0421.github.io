@@ -2,124 +2,179 @@
 <html lang="ja">
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>SKILL - かぶとの住処</title>
-    <link rel="shortcut icon" type="image/png" sizes="96x96" href="pictures/favicon-96x96.png">
-    <link rel="stylesheet" href="CSS/style.css?v=20260512-2">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SKILL - KABUTO PORTFOLIO</title>
+  <meta name="description" content="かぶと（石野雄大）が扱える技術と得意な制作スタイル。Python、TypeScript、React、Unity、Flutter、SwiftUI、ESP32など。">
+  <meta name="theme-color" content="#080b15">
+  <link rel="icon" type="image/png" href="pictures/icon/kabuto-pixel.png">
+  <link rel="apple-touch-icon" href="pictures/icon/kabuto-pixel.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="CSS/style.css?v=20261018">
+  <script>document.documentElement.classList.add("js");</script>
 </head>
 
-<body>
-    <div class="header-images">
-        <a href="index.html" class="site-home-link">
-            <span class="site-title">Kabuto Portfolio</span>
-        </a>
-        <div class="social-icons">
-            <a href="https://www.youtube.com/@user-py3rf8lu5t" target="_blank" rel="noopener noreferrer">
-                <img src="pictures/youtube.png" alt="youtube" class="youtube-image">
-            </a>
-            <a href="https://twitter.com/Kabuto0421" target="_blank" rel="noopener noreferrer">
-                <img src="pictures/twitter.png" alt="twitter" class="twitter-image">
-            </a>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSekCt8pvi2nPJa1sdYpRITzwiwz6pBY73iSDtWFSTQgtgdBtw/viewform?usp=sf_link" target="_blank" rel="noopener noreferrer">
-                <img src="pictures/questionIcon.png" alt="question" class="question-image">
-            </a>
-            <a href="https://github.com/Kabuto0421" target="_blank" rel="noopener noreferrer">
-                <img src="pictures/github.png" alt="github" class="github-image">
-            </a>
+<body data-page="skills">
+  <a class="skip-link" href="#main">本文へスキップ</a>
+  <header class="site-header">
+    <a class="brand" href="index.html" data-optional-wrap aria-label="KABUTO PORTFOLIO トップへ">
+      <img class="brand__icon" src="pictures/icon/kabuto-pixel.png" alt="" width="40" height="40" data-optional>
+      <span class="brand__name">KABUTO<span> PORTFOLIO</span></span>
+    </a>
+    <nav class="site-nav" aria-label="メインメニュー">
+      <a href="introduction.html" data-guide-text="制作で大切にしていることや、これまでの経歴・受賞歴を紹介しています。" data-guide-face="relaxed">自己紹介</a>
+      <a href="skills.html" aria-current="page" data-guide-text="扱える技術と、得意な作り方を整理しています。" data-guide-face="relaxed">SKILL</a>
+      <a href="gallery.html" data-guide-text="ハッカソンや個人開発で作ってきた作品を並べています。" data-guide-face="relaxed">GALLERY</a>
+    </nav>
+    <ul class="site-social" aria-label="外部リンク">
+      <li><a class="px-button" href="https://www.youtube.com/@user-py3rf8lu5t" target="_blank" rel="noopener noreferrer">YouTube</a></li>
+      <li><a class="px-button" href="https://twitter.com/Kabuto0421" target="_blank" rel="noopener noreferrer">X</a></li>
+      <li><a class="px-button" href="https://github.com/Kabuto0421" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+      <li><a class="px-button" href="https://docs.google.com/forms/d/e/1FAIpQLSekCt8pvi2nPJa1sdYpRITzwiwz6pBY73iSDtWFSTQgtgdBtw/viewform?usp=sf_link" target="_blank" rel="noopener noreferrer">お問い合わせ</a></li>
+    </ul>
+  </header>
+
+  <main id="main">
+    <section class="stage stage--page" aria-labelledby="page-title">
+      <canvas class="pixel-scene" data-spot-x="0.72" data-poly-x="0.5" aria-hidden="true"></canvas>
+      <div class="stage-heading">
+        <p class="eyebrow">▶ ABILITY</p>
+        <h1 id="page-title">SKILL</h1>
+      </div>
+      <div class="vrm-container" data-camera="face">
+        <canvas id="vrm-canvas" aria-label="案内役のVRMアバター。ドラッグで回転できます"></canvas>
+      </div>
+      <div class="guide-box px-window" data-guide>
+        <p class="guide-box__name">かぶと</p>
+        <p class="guide-box__text">SKILLでは、扱える技術と得意な作り方を整理しています。</p>
+      </div>
+    </section>
+
+    <div class="content">
+
+      <section class="section" data-reveal>
+        <div class="section-head">
+          <h2>得意領域</h2>
+          <p class="eyebrow">SPECIALTY</p>
         </div>
-    </div>
-
-    <h3> </h3>
-
-    <div class="canvas-container">
-        <canvas id="unity-canvas" width="960" height="600" aria-label="3D avatar viewer"></canvas>
-    </div>
-
-    <div class="menu-container">
-        <img src="pictures/menuA01.png" alt="Menu" class="no-effect">
-        <div class="menu-images">
-            <img src="pictures/menuB02.png" alt="自己紹介" class="shift-left-1" id="menuB02"
-                onmouseover="changeImage('pictures/menuA02.png', 'menuB02')"
-                onmouseout="changeImage('pictures/menuB02.png', 'menuB02')" onclick="navigateToIntro()">
-            <img src="pictures/menuA03.png" alt="SKILL" class="shift-left-2" id="menuA03"
-                onmouseover="changeImage('pictures/menuA03.png', 'menuA03')"
-                onmouseout="changeImage('pictures/menuA03.png', 'menuA03')" onclick="navigateToSkills()">
-            <img src="pictures/menuB04.png" alt="ギャラリー" class="shift-left-3" id="menuB04"
-                onmouseover="changeImage('pictures/menuA04.png', 'menuB04')"
-                onmouseout="changeImage('pictures/menuB04.png', 'menuB04')" onclick="navigateToGallery()">
+        <div class="prose">
+          <p>Webアプリ開発、AI APIを活用したサービス制作、Unityによるインタラクティブコンテンツ制作を中心に、企画から実装、発表までを経験しています。</p>
+          <p>技術そのものだけでなく、<strong>誰に見せるのか、どの場面で使われるのか、どのような体験として伝えるのか</strong>を考えながら制作することを大切にしています。</p>
         </div>
-    </div>
+      </section>
 
-<div class="content">
-    <h1>Skills</h1>
 
-    <h2>得意領域</h2>
-    <p>
-      Webアプリ開発、AI APIを活用したサービス制作、Unityによるインタラクティブコンテンツ制作を中心に、企画から実装、発表までを経験しています。
-      技術そのものだけでなく、誰に見せるのか、どの場面で使われるのか、どのような体験として伝えるのかを考えながら制作することを大切にしています。
-    </p>
+      <section class="section" data-reveal>
+        <div class="section-head">
+          <h2>主な技術</h2>
+          <p class="eyebrow">TECH</p>
+        </div>
+        <div class="grid grid--3">
+          <article class="skill-card px-window hover-card">
+            <h3>Python</h3>
+            <p>AI API連携、データ処理、プロトタイピング</p>
+          </article>
+          <article class="skill-card px-window hover-card">
+            <h3>JavaScript / TypeScript</h3>
+            <p>Webアプリ開発、フロントエンド実装</p>
+          </article>
+          <article class="skill-card px-window hover-card">
+            <h3>React / Next.js</h3>
+            <p>WebアプリのUI実装</p>
+          </article>
+          <article class="skill-card px-window hover-card">
+            <h3>Node.js</h3>
+            <p>API連携やバックエンド処理</p>
+          </article>
+          <article class="skill-card px-window hover-card">
+            <h3>C# / Unity</h3>
+            <p>ゲーム制作、VRChatワールド制作、インタラクション実装</p>
+          </article>
+          <article class="skill-card px-window hover-card">
+            <h3>Dart / Flutter</h3>
+            <p>モバイルアプリ開発</p>
+          </article>
+          <article class="skill-card px-window hover-card">
+            <h3>Swift / SwiftUI</h3>
+            <p>iOSアプリ開発を学習・実装中</p>
+          </article>
+          <article class="skill-card px-window hover-card">
+            <h3>Firebase / Supabase / Prisma</h3>
+            <p>認証、データベース、ホスティング、スキーマ管理</p>
+          </article>
+          <article class="skill-card px-window hover-card">
+            <h3>ESP32 / WebSocket</h3>
+            <p>Webアプリとハードウェアを連携させるプロトタイプ制作</p>
+          </article>
+        </div>
+      </section>
 
-    <h2>主な技術</h2>
-    <ul>
-      <li>・Python：AI API連携、データ処理、プロトタイピング</li>
-      <li>・JavaScript / TypeScript：Webアプリ開発、フロントエンド実装</li>
-      <li>・React / Next.js：WebアプリのUI実装</li>
-      <li>・Node.js：API連携やバックエンド処理</li>
-      <li>・C# / Unity：ゲーム制作、VRChatワールド制作、インタラクション実装</li>
-      <li>・Dart / Flutter：モバイルアプリ開発</li>
-      <li>・Swift / SwiftUI：iOSアプリ開発を学習・実装中</li>
-      <li>・Firebase / Supabase / Prisma：認証、データベース、ホスティング、スキーマ管理</li>
-      <li>・ESP32 / WebSocket：Webアプリとハードウェアを連携させるプロトタイプ制作</li>
-    </ul>
 
-    <h2>AI / API</h2>
-    <ul>
-      <li>・OpenAI APIを使った文章生成、画像生成、入力補助機能の試作</li>
-      <li>・Google Maps APIを使った位置情報サービスの開発</li>
-      <li>・ユーザーの入力や選択に応じて結果が変化する体験設計</li>
-    </ul>
-
-    <h2>制作スタイル</h2>
-    <ul>
-      <li>・アイデア出しから画面設計、実装、発表まで一通り担当可能</li>
-      <li>・ハッカソンでの短期開発経験が多く、素早い試作が得意</li>
-      <li>・利用者や発表を見る人を想定した情報整理と導線設計</li>
-      <li>・技術で解決する部分と、見せ方やルール設計で補う部分を整理する</li>
-      <li>・ゲーム性や体験価値が伝わる見せ方の設計</li>
-    </ul>
-
-    <h2>Currently Learning</h2>
-    <ul>
-      <li>・SwiftUIを用いたiOSアプリ開発</li>
-      <li>・AIを活用した会話体験・記録体験の設計</li>
-      <li>・使う人や見せる相手を想定したサービス設計</li>
-    </ul>
-  </div>
-
-    <script type="module" src="JS/vrm-viewer.js"></script>
-    <script src="JS/index.js" async defer></script>
-
-    <footer class="footer">
-        <div class="footer-content md-flex md-justify-between">
-            <a href="index.html" class="footer__logo">
-                <img src="pictures/K_rogo2.png" width="180" height="80" alt="K Logo">
-            </a>
-            <ul class="footer__navi flex">
-                <li><a href="introduction.html">自己紹介</a></li>
-                <li><a href="skills.html">SKILL</a></li>
-                <li><a href="gallery.html">ギャラリー</a></li>
+      <section class="section" data-reveal>
+        <div class="section-head">
+          <h2>AI活用と制作スタイル</h2>
+          <p class="eyebrow">STYLE</p>
+        </div>
+        <div class="grid grid--3">
+          <article class="panel px-window px-window--dim">
+            <h3>AI / API</h3>
+            <ul class="dot-list">
+              <li>OpenAI APIを使った文章生成、画像生成、入力補助機能の試作</li>
+              <li>Google Maps APIを使った位置情報サービスの開発</li>
+              <li>ユーザーの入力や選択に応じて結果が変化する体験設計</li>
             </ul>
+          </article>
+          <article class="panel px-window px-window--dim">
+            <h3>制作スタイル</h3>
+            <ul class="dot-list">
+              <li>アイデア出しから画面設計、実装、発表まで一通り担当可能</li>
+              <li>ハッカソンでの短期開発経験が多く、素早い試作が得意</li>
+              <li>利用者や発表を見る人を想定した情報整理と導線設計</li>
+              <li>技術で解決する部分と、見せ方やルール設計で補う部分を整理する</li>
+              <li>ゲーム性や体験価値が伝わる見せ方の設計</li>
+            </ul>
+          </article>
+          <article class="panel px-window px-window--dim">
+            <h3>Currently Learning</h3>
+            <ul class="dot-list">
+              <li>SwiftUIを用いたiOSアプリ開発</li>
+              <li>AIを活用した会話体験・記録体験の設計</li>
+              <li>使う人や見せる相手を想定したサービス設計</li>
+            </ul>
+          </article>
         </div>
-        <hr>
-        <p class="copyright">
-            © 2026 <a href="index.html">Kabuto</a> All Rights Reserved.
-        </p>
-    </footer>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <a class="brand" href="index.html" data-optional-wrap aria-label="KABUTO PORTFOLIO トップへ">
+      <img class="brand__icon" src="pictures/icon/kabuto-pixel.png" alt="" width="40" height="40" data-optional>
+      <span class="brand__name">KABUTO<span> PORTFOLIO</span></span>
+    </a>
+      <ul class="footer__navi">
+        <li><a href="introduction.html">自己紹介</a></li>
+        <li><a href="skills.html">SKILL</a></li>
+        <li><a href="gallery.html">GALLERY</a></li>
+        <li><a href="alakazar.html">ALAKAZAR</a></li>
+      </ul>
+      <ul class="site-social site-social--footer" aria-label="外部リンク">
+      <li><a class="px-button" href="https://www.youtube.com/@user-py3rf8lu5t" target="_blank" rel="noopener noreferrer">YouTube</a></li>
+      <li><a class="px-button" href="https://twitter.com/Kabuto0421" target="_blank" rel="noopener noreferrer">X</a></li>
+      <li><a class="px-button" href="https://github.com/Kabuto0421" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+      <li><a class="px-button" href="https://docs.google.com/forms/d/e/1FAIpQLSekCt8pvi2nPJa1sdYpRITzwiwz6pBY73iSDtWFSTQgtgdBtw/viewform?usp=sf_link" target="_blank" rel="noopener noreferrer">お問い合わせ</a></li>
+    </ul>
+    </div>
+    <p class="copyright">© 2026 <a href="index.html">Kabuto</a> All Rights Reserved.</p>
+  </footer>
+
+  <script type="module" src="JS/pixel-scene.js"></script>
+  <script type="module" src="JS/vrm-viewer.js"></script>
+  <script src="JS/site.js" defer></script>
 </body>
 
 </html>

@@ -2,278 +2,261 @@
 <html lang="ja">
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ギャラリー - かぶとの住処</title>
-    <link rel="shortcut icon" type="image/png" sizes="96x96" href="pictures/favicon-96x96.png">
-    <link rel="stylesheet" href="CSS/style.css?v=20260512-2">
-    <link rel="stylesheet" href="CSS/alakazar.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GALLERY - KABUTO PORTFOLIO</title>
+  <meta name="description" content="かぶと（石野雄大）の制作物ギャラリー。ALAKAZAR、ImagineQuest、ふぉとぴっくる、Parrotter、数刃など。">
+  <meta name="theme-color" content="#080b15">
+  <link rel="icon" type="image/png" href="pictures/icon/kabuto-pixel.png">
+  <link rel="apple-touch-icon" href="pictures/icon/kabuto-pixel.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="CSS/style.css?v=20261018">
+  <link rel="stylesheet" href="CSS/alakazar.css?v=20261018">
+  <script>document.documentElement.classList.add("js");</script>
 </head>
 
-<body>
-    <div class="header-images">
-        <a href="index.html" class="site-home-link">
-            <span class="site-title">Kabuto Portfolio</span>
-        </a>
-        <div class="social-icons">
-            <a href="https://www.youtube.com/@user-py3rf8lu5t" target="_blank" rel="noopener noreferrer">
-                <img src="pictures/youtube.png" alt="youtube" class="youtube-image">
-            </a>
-            <a href="https://twitter.com/Kabuto0421" target="_blank" rel="noopener noreferrer">
-                <img src="pictures/twitter.png" alt="twitter" class="twitter-image">
-            </a>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSekCt8pvi2nPJa1sdYpRITzwiwz6pBY73iSDtWFSTQgtgdBtw/viewform?usp=sf_link" target="_blank" rel="noopener noreferrer">
-                <img src="pictures/questionIcon.png" alt="question" class="question-image">
-            </a>
-            <a href="https://github.com/Kabuto0421" target="_blank" rel="noopener noreferrer">
-                <img src="pictures/github.png" alt="github" class="github-image">
-            </a>
+<body data-page="gallery">
+  <a class="skip-link" href="#main">本文へスキップ</a>
+  <header class="site-header">
+    <a class="brand" href="index.html" data-optional-wrap aria-label="KABUTO PORTFOLIO トップへ">
+      <img class="brand__icon" src="pictures/icon/kabuto-pixel.png" alt="" width="40" height="40" data-optional>
+      <span class="brand__name">KABUTO<span> PORTFOLIO</span></span>
+    </a>
+    <nav class="site-nav" aria-label="メインメニュー">
+      <a href="introduction.html" data-guide-text="制作で大切にしていることや、これまでの経歴・受賞歴を紹介しています。" data-guide-face="relaxed">自己紹介</a>
+      <a href="skills.html" data-guide-text="扱える技術と、得意な作り方を整理しています。" data-guide-face="relaxed">SKILL</a>
+      <a href="gallery.html" aria-current="page" data-guide-text="ハッカソンや個人開発で作ってきた作品を並べています。" data-guide-face="relaxed">GALLERY</a>
+    </nav>
+    <ul class="site-social" aria-label="外部リンク">
+      <li><a class="px-button" href="https://www.youtube.com/@user-py3rf8lu5t" target="_blank" rel="noopener noreferrer">YouTube</a></li>
+      <li><a class="px-button" href="https://twitter.com/Kabuto0421" target="_blank" rel="noopener noreferrer">X</a></li>
+      <li><a class="px-button" href="https://github.com/Kabuto0421" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+      <li><a class="px-button" href="https://docs.google.com/forms/d/e/1FAIpQLSekCt8pvi2nPJa1sdYpRITzwiwz6pBY73iSDtWFSTQgtgdBtw/viewform?usp=sf_link" target="_blank" rel="noopener noreferrer">お問い合わせ</a></li>
+    </ul>
+  </header>
+
+  <main id="main">
+    <section class="stage stage--page" aria-labelledby="page-title">
+      <canvas class="pixel-scene" data-spot-x="0.72" data-poly-x="0.5" aria-hidden="true"></canvas>
+      <div class="stage-heading">
+        <p class="eyebrow">▶ WORKS</p>
+        <h1 id="page-title">GALLERY</h1>
+      </div>
+      <div class="vrm-container" data-camera="face">
+        <canvas id="vrm-canvas" aria-label="案内役のVRMアバター。ドラッグで回転できます"></canvas>
+      </div>
+      <div class="guide-box px-window" data-guide>
+        <p class="guide-box__name">かぶと</p>
+        <p class="guide-box__text">GALLERYでは、これまで作ってきた作品を紹介しています。</p>
+      </div>
+    </section>
+
+    <div class="content">
+
+      <section class="section" data-reveal>
+        <div class="section-head">
+          <h2>制作・試作したもの</h2>
+          <p class="eyebrow">INTRO</p>
         </div>
-    </div>
-
-    <h3> </h3>
-
-    <div class="canvas-container">
-        <canvas id="unity-canvas" width="960" height="600" aria-label="3D avatar viewer"></canvas>
-    </div>
-
-    <div class="menu-container">
-        <img src="pictures/menuA01.png" alt="Menu" class="no-effect">
-        <div class="menu-images">
-            <img src="pictures/menuB02.png" alt="自己紹介" class="shift-left-1" id="menuB02"
-                onmouseover="changeImage('pictures/menuA02.png', 'menuB02')"
-                onmouseout="changeImage('pictures/menuB02.png', 'menuB02')" onclick="navigateToIntro()">
-            <img src="pictures/menuB03.png" alt="SKILL" class="shift-left-2" id="menuB03"
-                onmouseover="changeImage('pictures/menuA03.png', 'menuB03')"
-                onmouseout="changeImage('pictures/menuB03.png', 'menuB03')" onclick="navigateToSkills()">
-            <img src="pictures/menuA04.png" alt="ギャラリー" class="shift-left-3" id="menuA04"
-                onmouseover="changeImage('pictures/menuA04.png', 'menuA04')"
-                onmouseout="changeImage('pictures/menuA04.png', 'menuA04')" onclick="navigateToGallery()">
+        <div class="prose">
+          <p>ハッカソン、コンテスト、授業制作、個人開発で制作したプロトタイプや実験的な作品をまとめています。公開・運用中のサービスだけでなく、発表、検証、学習、制作途中のものも含まれます。</p>
+          <p>Webアプリ、AI、Unity、ハードウェア制御、教材的プロトタイプなど、目的や対象に合わせて技術を選びながら制作してきました。それぞれの作品では、機能そのものだけでなく、誰が触るのか、どの場面で使うのか、どう見せれば伝わるのかを意識しています。</p>
         </div>
-    </div>
+      </section>
 
-<div class="content">
-        <h1>Gallery</h1>
-        <h2 class="centerh3">制作・試作したもの</h2>
-        <p>
-            ハッカソン、コンテスト、授業制作、個人開発で制作したプロトタイプや実験的な作品をまとめています。
-            公開・運用中のサービスだけでなく、発表、検証、学習、制作途中のものも含まれます。
-        </p>
-        <p>
-            Webアプリ、AI、Unity、ハードウェア制御、教材的プロトタイプなど、目的や対象に合わせて技術を選びながら制作してきました。
-            それぞれの作品では、機能そのものだけでなく、誰が触るのか、どの場面で使うのか、どう見せれば伝わるのかを意識しています。
-        </p>
 
-        <article class="alakazar-feature">
-            <a class="alakazar-feature__image" href="alakazar.html" aria-label="ALAKAZARの作品紹介を読む">
-                <img src="pictures/alakazar/thumbnail.png" alt="ALAKAZARのタイトル画像。冒険者と監獄都市の敵が向き合う" width="512" height="512" loading="lazy">
-            </a>
-            <div class="alakazar-feature__body">
-                <p class="alakazar-eyebrow">友人と二人で制作した初のオリジナルゲーム</p>
-                <h2><a href="alakazar.html">ALAKAZAR</a></h2>
-                <p class="alakazar-feature__tagline">監獄都市を、一手ずつ突破せよ。</p>
-                <p>武器ごとに異なる移動・攻撃範囲と妖精の力を使い、敵の攻撃予告を読みながら戦うターン制タクティクスローグライク。</p>
-                <div class="alakazar-status" aria-label="公開状況">
-                    <span>体験版公開中</span>
-                    <span>Steamストアページ近日公開予定</span>
-                </div>
-                <a class="alakazar-feature__link" href="alakazar.html">作品の詳細を見る <span aria-hidden="true">→</span></a>
+      <section class="section" data-reveal>
+        <div class="section-head">
+          <h2>ALAKAZAR</h2>
+          <p class="eyebrow">FEATURED</p>
+        </div>
+        <article class="alakazar-feature px-window hover-card">
+          <a class="alakazar-feature__image" href="alakazar.html" tabindex="-1" aria-hidden="true">
+            <img src="pictures/alakazar/thumbnail.png" alt="" width="512" height="512" loading="lazy">
+          </a>
+          <div class="alakazar-feature__body">
+            <p class="alakazar-eyebrow">友人と二人で制作した初のオリジナルゲーム</p>
+            <h3 class="alakazar-feature__title"><a href="alakazar.html">ALAKAZAR</a></h3>
+            <p class="alakazar-feature__tagline">監獄都市を、一手ずつ突破せよ。</p>
+            <p>武器ごとに異なる移動・攻撃範囲と妖精の力を使い、敵の攻撃予告を読みながら戦うターン制タクティクスローグライク。</p>
+            <div class="alakazar-status" aria-label="公開状況">
+              <span>体験版公開中</span>
+              <span>Steamストアページ近日公開予定</span>
             </div>
+            <span class="alakazar-feature__link" aria-hidden="true">作品の詳細を見る</span>
+          </div>
         </article>
+      </section>
 
-        <div class="image-container">
-            <h2>ImagineQuest</h2>
-            <p>
-                ユーザーの入力や選択肢に応じて、AIが物語と画像を生成するリアルタイム生成型アドベンチャーゲームです。
-                生成AIの出力をそのまま見せるだけではなく、ゲームとして進行している感覚を保つことを意識しました。
-            </p>
-            <p>高専プロコン課題部門 予選突破 / ヒーローズリーグ 決勝進出</p>
-            <div class="image-item">
-                <a href="https://protopedia.net/prototype/4823" target="_blank">
-                    <img src="pictures/farin.png" alt="ImagineQuest">
-                </a>
-            </div>
+
+      <section class="section" data-reveal>
+        <div class="section-head">
+          <h2>作品</h2>
+          <p class="eyebrow">WORKS</p>
         </div>
-
-        <div class="image-container">
-            <h2>ふぉとぴっくる / 金沢フォト漬け</h2>
-            <p>
-                ランダムに指定された地点へ実際に行き、ストリートビューに近い構図の写真を撮ることでスコアを得る位置情報ゲームです。
-                観光地として有名な場所だけでなく、普段は通り過ぎてしまう場所にも体験を与え、地域を楽しく感じられるようにすることを目指しました。
-            </p>
-            <p>第一回ハッカソン「Asian Challenge Cup」最優秀賞 受賞</p>
-            <div class="image-item">
-                <a href="https://github.com/Kabuto0421/PhotoPickle" target="_blank">
-                    <img src="pictures/kanazawaPhotoPicture.png" alt="ふぉとぴっくる / 金沢フォト漬け">
-                </a>
+        <div class="grid grid--cards">
+          <article class="work-card px-window hover-card">
+            <div class="work-card__thumb"><img src="pictures/thumbs/farin.webp" alt="ImagineQuestのゲーム画面" loading="lazy" decoding="async"></div>
+            <div class="work-card__body">
+              <h3><a href="https://protopedia.net/prototype/4823" target="_blank" rel="noopener noreferrer">ImagineQuest</a></h3>
+              <ul class="work-card__meta"><li><span class="badge">高専プロコン課題部門 予選突破</span></li><li><span class="badge">ヒーローズリーグ 決勝進出</span></li></ul>
+              <p>ユーザーの入力や選択肢に応じて、AIが物語と画像を生成するリアルタイム生成型アドベンチャーゲームです。生成AIの出力をそのまま見せるだけではなく、ゲームとして進行している感覚を保つことを意識しました。</p>
+              <span class="work-card__link" aria-hidden="true">▶ 見る ↗</span>
             </div>
+          </article>
+          <article class="work-card px-window hover-card">
+            <div class="work-card__thumb"><img src="pictures/thumbs/kanazawaPhotoPicture.webp" alt="ふぉとぴっくるの画面" loading="lazy" decoding="async"></div>
+            <div class="work-card__body">
+              <h3><a href="https://github.com/Kabuto0421/PhotoPickle" target="_blank" rel="noopener noreferrer">ふぉとぴっくる / 金沢フォト漬け</a></h3>
+              <ul class="work-card__meta"><li><span class="badge badge--award">Asian Challenge Cup 最優秀賞</span></li><li><span class="badge badge--award">技育博 Vol.2 2024 株式会社DeNA賞 / 株式会社ゆめみ賞</span></li></ul>
+              <p>ランダムに指定された地点へ実際に行き、ストリートビューに近い構図の写真を撮ることでスコアを得る位置情報ゲームです。観光地として有名な場所だけでなく、普段は通り過ぎてしまう場所にも体験を与え、地域を楽しく感じられるようにすることを目指しました。</p>
+              <span class="work-card__link" aria-hidden="true">▶ GitHubで見る ↗</span>
+            </div>
+          </article>
+          <article class="work-card px-window hover-card">
+            <div class="work-card__thumb"><img src="pictures/thumbs/parroter.webp" alt="Parrotterの画面" loading="lazy" decoding="async"></div>
+            <div class="work-card__body">
+              <h3><a href="https://tesns.vercel.app/" target="_blank" rel="noopener noreferrer">Parrotter</a></h3>
+              <ul class="work-card__meta"><li><span class="badge badge--award">技育CAMP Vol.4 2024 努力賞</span></li></ul>
+              <p>SNS上の文章や画像を、より社交的な表現へ変換することをテーマにしたプロトタイプです。AIによる変換機能だけでなく、投稿がどのように受け取られるか、コミュニケーション上の摩擦をどう減らせるかを考えながら制作しました。</p>
+              <span class="work-card__link" aria-hidden="true">▶ 見る ↗</span>
+            </div>
+          </article>
+          <article class="work-card px-window hover-card">
+            <div class="work-card__thumb"><img src="pictures/thumbs/MathEdge.webp" alt="数刃の画面" loading="lazy" decoding="async"></div>
+            <div class="work-card__body">
+              <h3><a href="https://mathedge-581f3.web.app/" target="_blank" rel="noopener noreferrer">数刃</a></h3>
+              <ul class="work-card__meta"><li><span class="badge badge--award">技育CAMP Vol.2 2024 努力賞</span></li></ul>
+              <p>数学問題を素早く解くことをテーマにしたWebアプリです。学習系の要素を持ちながらも、まず触ってすぐ遊べること、短い時間で繰り返したくなるテンポを意識しました。</p>
+              <span class="work-card__link" aria-hidden="true">▶ 見る ↗</span>
+            </div>
+          </article>
+          <article class="work-card px-window hover-card">
+            <div class="work-card__thumb"><img src="pictures/thumbs/vr-kosen-conf.webp" alt="制作中のVR高専カンファレンス会場" loading="lazy" decoding="async"></div>
+            <div class="work-card__body">
+              <h3><a href="https://x.com/kosenconf182" target="_blank" rel="noopener noreferrer">VR高専カンファレンス in VRChat</a></h3>
+              <ul class="work-card__meta"><li><span class="badge">VRChat</span></li><li><span class="badge">空間設計</span></li></ul>
+              <p>VRChat上で高専カンファレンスを開催するためのワールド制作・空間設計に取り組んだプロジェクトです。登壇スペースだけでなく、交流やミニゲームを通して参加者同士の接点が生まれるような構成を考えました。</p>
+              <span class="work-card__link" aria-hidden="true">▶ 投稿を見る ↗</span>
+            </div>
+          </article>
+          <article class="work-card px-window hover-card">
+            <div class="work-card__thumb work-card__thumb--code" aria-hidden="true"><b>&lt;/&gt;</b><span>Python / WebSocket / ESP32</span></div>
+            <div class="work-card__body">
+              <h3><a href="https://github.com/Kabuto0421/kosen21s_01_system_design_Light-Speed_Knowledge_and_Action" target="_blank" rel="noopener noreferrer">電光知動</a></h3>
+              <ul class="work-card__meta"><li><span class="badge">ハードウェア連携</span></li></ul>
+              <p>Webアプリでスタート地点、ゴール地点、障害物を設定し、最短経路を計算して、LEDの点灯や自走車の動きに反映するシステムです。Pythonによる経路探索、WebSocket通信、ESP32によるモーター制御・LED制御を組み合わせて制作しました。</p>
+              <p>画面上の操作が現実の光や車の動きにつながるため、ソフトウェアとハードウェアを一つの体験として扱うことを意識しました。</p>
+              <span class="work-card__link" aria-hidden="true">▶ GitHubで見る ↗</span>
+            </div>
+          </article>
+          <article class="work-card px-window hover-card">
+            <div class="work-card__thumb work-card__thumb--code" aria-hidden="true"><b>&lt;/&gt;</b><span>GitHub 教材</span></div>
+            <div class="work-card__body">
+              <h3><a href="https://github.com/Kabuto0421/GitHubIkenBattle" target="_blank" rel="noopener noreferrer">GitHubIkenBattle</a></h3>
+              <ul class="work-card__meta"><li><span class="badge">教材</span></li></ul>
+              <p>GitHubや共同開発の流れを学ぶために制作した、キャラクターバトル形式の教材的プロトタイプです。参加者がキャラクタークラスを追加し、ステータスや見た目を設定することで、プログラムの拡張や共同編集の流れを体験できるようにしました。</p>
+              <p>技術を説明するだけでなく、参加者が自分のキャラクターを作りながら学べるように、教材としての分かりやすさと遊びの要素を両立させることを意識しました。</p>
+              <span class="work-card__link" aria-hidden="true">▶ GitHubで見る ↗</span>
+            </div>
+          </article>
+          <article class="work-card px-window hover-card">
+            <div class="work-card__thumb work-card__thumb--code" aria-hidden="true"><b>&lt;/&gt;</b><span>FastAPI / Streamlit / GiNZA</span></div>
+            <div class="work-card__body">
+              <h3><a href="https://github.com/Kabuto0421/memoryProject" target="_blank" rel="noopener noreferrer">memoryProject（制作中）</a></h3>
+              <ul class="work-card__meta"><li><span class="badge">制作中</span></li></ul>
+              <p>AIとの会話を長期的に扱うための、記録・再利用の仕組みを試している制作中のプロトタイプです。FastAPI、Streamlit、GiNZAなどを使い、会話データをローカル環境で扱うための土台を作っています。</p>
+              <p>単にAIを呼び出すのではなく、会話の中で何を記録し、後からどう取り出せると自然かを考えるための実験として取り組んでいます。</p>
+              <span class="work-card__link" aria-hidden="true">▶ GitHubで見る ↗</span>
+            </div>
+          </article>
+          <article class="work-card px-window hover-card work-card--nolink">
+            <div class="work-card__thumb"><img src="pictures/thumbs/kabutoAR.webp" alt="名刺からARで3Dモデルを呼び出す様子" loading="lazy" decoding="async"></div>
+            <div class="work-card__body">
+              <h3>ARかぶと召喚ツール</h3>
+              <ul class="work-card__meta"><li><span class="badge">AR</span></li></ul>
+              <p>名刺などの現実の媒体から、3Dモデルを呼び出すことを試したAR作品です。現実の印刷物とデジタルコンテンツをつなげる表現として制作しました。</p>
+              <p class="work-card__note">当時使用していたリンクは期限切れのため、画像のみ掲載しています。</p>
+            </div>
+          </article>
         </div>
+      </section>
 
-        <div class="image-container">
-            <h2>Parrotter</h2>
-            <p>
-                SNS上の文章や画像を、より社交的な表現へ変換することをテーマにしたプロトタイプです。
-                AIによる変換機能だけでなく、投稿がどのように受け取られるか、コミュニケーション上の摩擦をどう減らせるかを考えながら制作しました。
-            </p>
-            <p>技育CAMP Vol.4 2024 努力賞 受賞</p>
-            <div class="image-item">
-                <a href="https://tesns.vercel.app/" target="_blank">
-                    <img src="pictures/parroter.jpeg" alt="Parrotter">
-                </a>
-            </div>
+
+      <section class="section" data-reveal>
+        <div class="section-head">
+          <h2>小作品・実験制作</h2>
+          <p class="eyebrow">MINI GAMES</p>
         </div>
-
-        <div class="image-container">
-            <h2>数刃</h2>
-            <p>
-                数学問題を素早く解くことをテーマにしたWebアプリです。
-                学習系の要素を持ちながらも、まず触ってすぐ遊べること、短い時間で繰り返したくなるテンポを意識しました。
-            </p>
-            <p>技育CAMP Vol.2 2024 努力賞 受賞</p>
-            <div class="image-item">
-                <a href="https://mathedge-581f3.web.app/" target="_blank">
-                    <img src="pictures/MathEdge.png" alt="数刃">
-                </a>
-            </div>
+        <div class="prose">
+          <p>ハッカソンや講習会、短時間制作で作った小規模な作品です。技術検証やアイデアの試作として、短い時間で触れる形にすることを重視して制作しました。</p>
         </div>
-
-        <div class="image-container">
-            <h2>VR高専カンファレンス in VRChat</h2>
-            <p>
-                VRChat上で高専カンファレンスを開催するためのワールド制作・空間設計に取り組んだプロジェクトです。
-                登壇スペースだけでなく、交流やミニゲームを通して参加者同士の接点が生まれるような構成を考えました。
-            </p>
-            <div class="image-item">
-                <a href="https://x.com/kosenconf182" target="_blank">
-                    <img src="pictures/VR高専カンファ制作中.png" alt="VR高専カンファレンス in VRChat">
-                </a>
+        <div class="grid grid--small" style="margin-top: 26px;">
+          <article class="work-card px-window hover-card">
+            <div class="work-card__thumb"><img src="pictures/thumbs/slot.webp" alt="抽選スロットの画面" loading="lazy" decoding="async"></div>
+            <div class="work-card__body">
+              <h3><a href="https://twitter.com/kabuto0421/status/1761986953699033160?s=61&t=U9s-g7eSjtUCLiMq8si4RQ" target="_blank" rel="noopener noreferrer">抽選スロット</a></h3>
+              <p>同学科会の抽選会用に制作した、スロット形式の抽選ツールです。</p>
+              <span class="work-card__link" aria-hidden="true">▶ 投稿を見る ↗</span>
             </div>
+          </article>
+          <article class="work-card px-window hover-card">
+            <div class="work-card__thumb"><img src="pictures/thumbs/hukutya.webp" alt="フクチャの画面" loading="lazy" decoding="async"></div>
+            <div class="work-card__body">
+              <h3><a href="https://kabuto0421.github.io/gacha.github.io/" target="_blank" rel="noopener noreferrer">フクチャ</a></h3>
+              <p>シビックテックハッカソン in 鯖江で制作した、地域や観光をテーマにした短時間制作プロトタイプです。</p>
+              <span class="work-card__link" aria-hidden="true">▶ 見る ↗</span>
+            </div>
+          </article>
+          <article class="work-card px-window hover-card">
+            <div class="work-card__thumb"><img src="pictures/thumbs/takoyaki.webp" alt="たこ焼きゲームの画面" loading="lazy" decoding="async"></div>
+            <div class="work-card__body">
+              <h3><a href="https://kabuto0421.github.io/takoyaki.github.io/" target="_blank" rel="noopener noreferrer">たこ焼きゲーム</a></h3>
+              <p>シンプルな操作で遊べる小規模ゲームとして制作した作品です。</p>
+              <span class="work-card__link" aria-hidden="true">▶ 見る ↗</span>
+            </div>
+          </article>
+          <article class="work-card px-window hover-card">
+            <div class="work-card__thumb"><img src="pictures/thumbs/donutGame.webp" alt="ドーナツマージゲームの画面" loading="lazy" decoding="async"></div>
+            <div class="work-card__body">
+              <h3><a href="https://unityroom.com/games/donutmergegame" target="_blank" rel="noopener noreferrer">ドーナツマージゲーム</a></h3>
+              <p>Unity講習会用に制作した、ゲーム制作の流れを説明するためのサンプル作品です。</p>
+              <span class="work-card__link" aria-hidden="true">▶ 見る ↗</span>
+            </div>
+          </article>
         </div>
+      </section>
 
-        <div class="image-container">
-            <h2>電光知動</h2>
-            <p>
-                Webアプリでスタート地点、ゴール地点、障害物を設定し、最短経路を計算して、LEDの点灯や自走車の動きに反映するシステムです。
-                Pythonによる経路探索、WebSocket通信、ESP32によるモーター制御・LED制御を組み合わせて制作しました。
-            </p>
-            <p>
-                画面上の操作が現実の光や車の動きにつながるため、ソフトウェアとハードウェアを一つの体験として扱うことを意識しました。
-            </p>
-            <div class="image-item">
-                <a href="https://github.com/Kabuto0421/kosen21s_01_system_design_Light-Speed_Knowledge_and_Action" target="_blank">
-                    <img src="pictures/github.png" alt="電光知動">
-                </a>
-            </div>
-        </div>
-
-        <div class="image-container">
-            <h2>GitHubIkenBattle</h2>
-            <p>
-                GitHubや共同開発の流れを学ぶために制作した、キャラクターバトル形式の教材的プロトタイプです。
-                参加者がキャラクタークラスを追加し、ステータスや見た目を設定することで、プログラムの拡張や共同編集の流れを体験できるようにしました。
-            </p>
-            <p>
-                技術を説明するだけでなく、参加者が自分のキャラクターを作りながら学べるように、教材としての分かりやすさと遊びの要素を両立させることを意識しました。
-            </p>
-            <div class="image-item">
-                <a href="https://github.com/Kabuto0421/GitHubIkenBattle" target="_blank">
-                    <img src="pictures/github.png" alt="GitHubIkenBattle">
-                </a>
-            </div>
-        </div>
-
-        <div class="image-container">
-            <h2>memoryProject（制作中）</h2>
-            <p>
-                AIとの会話を長期的に扱うための、記録・再利用の仕組みを試している制作中のプロトタイプです。
-                FastAPI、Streamlit、GiNZAなどを使い、会話データをローカル環境で扱うための土台を作っています。
-            </p>
-            <p>
-                単にAIを呼び出すのではなく、会話の中で何を記録し、後からどう取り出せると自然かを考えるための実験として取り組んでいます。
-            </p>
-            <div class="image-item">
-                <a href="https://github.com/Kabuto0421/memoryProject" target="_blank">
-                    <img src="pictures/github.png" alt="memoryProject">
-                </a>
-            </div>
-        </div>
-
-        <div class="image-container">
-            <h2>ARかぶと召喚ツール</h2>
-            <p>
-                名刺などの現実の媒体から、3Dモデルを呼び出すことを試したAR作品です。
-                現実の印刷物とデジタルコンテンツをつなげる表現として制作しました。
-            </p>
-            <p>現在、当時使用していたリンクは期限切れの場合があります。</p>
-            <div class="image-item">
-                <img src="pictures/kabutoAR.png" alt="ARかぶと召喚ツール">
-            </div>
-        </div>
-
-        <div class="image-container">
-            <h2>小作品・実験制作</h2>
-            <p>
-                ハッカソンや講習会、短時間制作で作った小規模な作品です。
-                技術検証やアイデアの試作として、短い時間で触れる形にすることを重視して制作しました。
-            </p>
-
-            <h3>抽選スロット</h3>
-            <p>同学科会の抽選会用に制作した、スロット形式の抽選ツールです。</p>
-            <div class="image-item">
-                <a href="https://twitter.com/kabuto0421/status/1761986953699033160?s=61&t=U9s-g7eSjtUCLiMq8si4RQ" target="_blank">
-                    <img src="pictures/slot.png" alt="抽選スロット">
-                </a>
-            </div>
-
-            <h3>フクチャ</h3>
-            <p>シビックテックハッカソン in 鯖江で制作した、地域や観光をテーマにした短時間制作プロトタイプです。</p>
-            <div class="image-item">
-                <a href="https://kabuto0421.github.io/gacha.github.io/" target="_blank">
-                    <img src="pictures/hukutya.png" alt="フクチャ">
-                </a>
-            </div>
-
-            <h3>たこ焼きゲーム</h3>
-            <p>シンプルな操作で遊べる小規模ゲームとして制作した作品です。</p>
-            <div class="image-item">
-                <a href="https://kabuto0421.github.io/takoyaki.github.io/" target="_blank">
-                    <img src="pictures/takoyaki.png" alt="たこ焼きゲーム">
-                </a>
-            </div>
-
-            <h3>ドーナツマージゲーム</h3>
-            <p>Unity講習会用に制作した、ゲーム制作の流れを説明するためのサンプル作品です。</p>
-            <div class="image-item">
-                <a href="https://unityroom.com/games/donutmergegame" target="_blank">
-                    <img src="pictures/donutGame.jpeg" alt="ドーナツマージゲーム">
-                </a>
-            </div>
-        </div>
     </div>
+  </main>
 
-    <script type="module" src="JS/vrm-viewer.js"></script>
-    <script src="JS/index.js" async defer></script>
+  <footer class="footer">
+    <div class="footer-content">
+      <a class="brand" href="index.html" data-optional-wrap aria-label="KABUTO PORTFOLIO トップへ">
+      <img class="brand__icon" src="pictures/icon/kabuto-pixel.png" alt="" width="40" height="40" data-optional>
+      <span class="brand__name">KABUTO<span> PORTFOLIO</span></span>
+    </a>
+      <ul class="footer__navi">
+        <li><a href="introduction.html">自己紹介</a></li>
+        <li><a href="skills.html">SKILL</a></li>
+        <li><a href="gallery.html">GALLERY</a></li>
+        <li><a href="alakazar.html">ALAKAZAR</a></li>
+      </ul>
+      <ul class="site-social site-social--footer" aria-label="外部リンク">
+      <li><a class="px-button" href="https://www.youtube.com/@user-py3rf8lu5t" target="_blank" rel="noopener noreferrer">YouTube</a></li>
+      <li><a class="px-button" href="https://twitter.com/Kabuto0421" target="_blank" rel="noopener noreferrer">X</a></li>
+      <li><a class="px-button" href="https://github.com/Kabuto0421" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+      <li><a class="px-button" href="https://docs.google.com/forms/d/e/1FAIpQLSekCt8pvi2nPJa1sdYpRITzwiwz6pBY73iSDtWFSTQgtgdBtw/viewform?usp=sf_link" target="_blank" rel="noopener noreferrer">お問い合わせ</a></li>
+    </ul>
+    </div>
+    <p class="copyright">© 2026 <a href="index.html">Kabuto</a> All Rights Reserved.</p>
+  </footer>
 
-    <footer class="footer">
-        <div class="footer-content md-flex md-justify-between">
-            <a href="index.html" class="footer__logo">
-                <img src="pictures/K_rogo2.png" width="180" height="80" alt="K Logo">
-            </a>
-            <ul class="footer__navi flex">
-                <li><a href="introduction.html">自己紹介</a></li>
-                <li><a href="skills.html">SKILL</a></li>
-                <li><a href="gallery.html">ギャラリー</a></li>
-            </ul>
-        </div>
-        <hr>
-        <p class="copyright">
-            © 2026 <a href="index.html">Kabuto</a> All Rights Reserved.
-        </p>
-    </footer>
+  <script type="module" src="JS/pixel-scene.js"></script>
+  <script type="module" src="JS/vrm-viewer.js"></script>
+  <script src="JS/site.js" defer></script>
 </body>
 
 </html>
