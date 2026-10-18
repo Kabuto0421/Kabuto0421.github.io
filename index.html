@@ -3,91 +3,163 @@
 
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>かぶとの住処 - Portfolio</title>
-  <link rel="shortcut icon" type="image/png" sizes="96x96" href="pictures/favicon-96x96.png">
-  <link rel="stylesheet" href="CSS/style.css?v=20260512-2">
+  <title>KABUTO PORTFOLIO - かぶとの住処</title>
+  <meta name="description" content="かぶと（石野雄大）の制作ポートフォリオ。Webアプリ、AI活用、Unity・VRChat、ハードウェア連携などの制作と技術経験をまとめています。">
+  <meta name="theme-color" content="#080b15">
+  <link rel="icon" type="image/png" href="pictures/icon/favicon.png">
+  <link rel="apple-touch-icon" href="pictures/icon/kabuto-pixel.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="CSS/style.css?v=20261018">
+  <link rel="stylesheet" href="CSS/alakazar.css?v=20261018">
+  <script>document.documentElement.classList.add("js");</script>
 </head>
 
-<body>
-  <div class="header-images">
-    <a href="index.html" class="site-home-link">
-            <span class="site-title">Kabuto Portfolio</span>
-        </a>
-    <div class="social-icons">
-      <a href="https://www.youtube.com/@user-py3rf8lu5t" target="_blank" rel="noopener noreferrer">
-        <img src="pictures/youtube.png" alt="youtube" class="youtube-image">
-      </a>
-      <a href="https://twitter.com/Kabuto0421" target="_blank" rel="noopener noreferrer">
-        <img src="pictures/twitter.png" alt="twitter" class="twitter-image">
-      </a>
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLSekCt8pvi2nPJa1sdYpRITzwiwz6pBY73iSDtWFSTQgtgdBtw/viewform?usp=sf_link" target="_blank" rel="noopener noreferrer">
-        <img src="pictures/questionIcon.png" alt="question" class="question-image">
-      </a>
-      <a href="https://github.com/Kabuto0421" target="_blank" rel="noopener noreferrer">
-        <img src="pictures/github.png" alt="github" class="github-image">
-      </a>
+<body data-page="index">
+  <a class="skip-link" href="#main">本文へスキップ</a>
+  <header class="site-header">
+    <a class="brand" href="index.html" data-optional-wrap aria-label="KABUTO PORTFOLIO トップへ">
+      <img class="brand__icon" src="pictures/icon/kabuto-pixel.png" alt="" width="40" height="40" data-optional>
+      <span class="brand__name">KABUTO<span> PORTFOLIO</span></span>
+    </a>
+    <nav class="site-nav" aria-label="メインメニュー">
+      <a href="introduction.html" data-guide-text="制作で大切にしていることや、これまでの経歴・受賞歴を紹介しています。" data-guide-face="relaxed">自己紹介</a>
+      <a href="skills.html" data-guide-text="扱える技術と、得意な作り方を整理しています。" data-guide-face="relaxed">SKILL</a>
+      <a href="gallery.html" data-guide-text="ハッカソンや個人開発で作ってきた作品を並べています。" data-guide-face="relaxed">GALLERY</a>
+    </nav>
+    <ul class="site-social" aria-label="外部リンク">
+      <li><a class="px-button" href="https://www.youtube.com/@user-py3rf8lu5t" target="_blank" rel="noopener noreferrer">YouTube</a></li>
+      <li><a class="px-button" href="https://twitter.com/Kabuto0421" target="_blank" rel="noopener noreferrer">X</a></li>
+      <li><a class="px-button" href="https://github.com/Kabuto0421" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+      <li><a class="px-button" href="https://docs.google.com/forms/d/e/1FAIpQLSekCt8pvi2nPJa1sdYpRITzwiwz6pBY73iSDtWFSTQgtgdBtw/viewform?usp=sf_link" target="_blank" rel="noopener noreferrer">お問い合わせ</a></li>
+    </ul>
+  </header>
+
+  <main id="main">
+    <section class="stage stage--title" aria-label="タイトル画面">
+      <canvas class="pixel-scene" aria-hidden="true"></canvas>
+      <canvas class="pixel-scene pixel-scene--alt" data-theme="alakazar" data-lazy aria-hidden="true"></canvas>
+      <h1 class="title-logo">
+        <span class="visually-hidden">KABUTO PORTFOLIO</span>
+        <!-- 文字ロゴ画像に差し替える場合: 下の span を <img src="pictures/icon/logo.png" alt=""> に置き換える（黒背景の画像はそのまま透過して見えます） -->
+        <span class="title-logo__mark" data-pixel-logo="KABUTO"></span>
+        <span class="title-logo__tagline">かぶとの住処 ─ 制作と技術の記録</span>
+      </h1>
+      <div class="vrm-container" data-camera="full">
+        <canvas id="vrm-canvas" aria-label="案内役のVRMアバター。ドラッグで回転できます"></canvas>
+      </div>
+      <nav class="title-menu px-window" aria-label="ページメニュー" data-menu data-menu-global>
+        <a class="title-menu__item is-selected" href="introduction.html" data-menu-item data-guide-text="制作で大切にしていることや、これまでの経歴・受賞歴を紹介しています。">自己紹介<small>PROFILE</small></a>
+        <a class="title-menu__item" href="skills.html" data-menu-item data-guide-text="扱える技術と、得意な作り方を整理しています。">SKILL<small>ABILITY</small></a>
+        <a class="title-menu__item" href="gallery.html" data-menu-item data-guide-text="ハッカソンや個人開発で作ってきた作品を並べています。">GALLERY<small>WORKS</small></a>
+        <a class="title-menu__item" href="alakazar.html" data-menu-item data-guide-text="友人と二人で制作中のターン制タクティクスローグライクです。体験版も公開中！" data-scene-theme="alakazar">ALAKAZAR<small>GAME</small></a>
+        <div class="title-menu__foot">
+          <p class="title-menu__hint" aria-hidden="true">↑↓ 選択　ENTER 決定</p>
+          <button class="px-chip title-menu__bgm" type="button" data-bgm-toggle aria-pressed="true">♪ BGM ON</button>
+        </div>
+      </nav>
+      <div class="guide-box px-window" data-guide>
+        <p class="guide-box__name">かぶと</p>
+        <p class="guide-box__text">ようこそ、かぶとの住処へ。</p>
+      </div>
+      <a class="scroll-cue" href="#about">▼ SCROLL</a>
+    </section>
+
+    <div class="content">
+
+      <section class="section" id="about" data-reveal>
+        <div class="section-head">
+          <h2>かぶとの制作ポートフォリオ</h2>
+          <p class="eyebrow">ABOUT</p>
+        </div>
+        <div class="prose">
+          <p>Webアプリ、AI活用、Unity・VRChat、ハードウェア連携など、これまで取り組んできた制作と技術経験をまとめたポートフォリオです。企画から画面設計、実装、発表までを通して、<strong>触る人や見せる相手に合わせた体験づくり</strong>を大切にしています。</p>
+          <p>上の案内役はVRMモデルです。メニューにカーソルを合わせると各ページを紹介し、右上の「AVATAR」から表情やカメラ、ドット表示／高解像度表示の切り替え、会話モードを試せます。ポートフォリオ自体を、少し触れる体験として見せるための要素です。</p>
+        </div>
+      </section>
+
+
+      <section class="section" data-reveal>
+        <div class="section-head">
+          <h2>ページを選ぶ</h2>
+          <p class="eyebrow">SELECT STAGE</p>
+        </div>
+        <div class="grid grid--3">
+          <a class="link-card px-window hover-card" href="introduction.html">
+            <span class="link-card__no">STAGE 01</span>
+            <span class="link-card__title">自己紹介<small>PROFILE</small></span>
+            <p>制作姿勢と経歴、コンテスト・受賞歴。どんな考え方で作っているかをまとめています。</p>
+            <span class="link-card__go">ENTER</span>
+          </a>
+          <a class="link-card px-window hover-card" href="skills.html">
+            <span class="link-card__no">STAGE 02</span>
+            <span class="link-card__title">SKILL<small>ABILITY</small></span>
+            <p>Web・AI・Unity・ハードウェア連携など、扱える技術と得意な作り方。</p>
+            <span class="link-card__go">ENTER</span>
+          </a>
+          <a class="link-card px-window hover-card" href="gallery.html">
+            <span class="link-card__no">STAGE 03</span>
+            <span class="link-card__title">GALLERY<small>WORKS</small></span>
+            <p>ハッカソン、コンテスト、授業制作、個人開発で作ってきた作品たち。</p>
+            <span class="link-card__go">ENTER</span>
+          </a>
+        </div>
+      </section>
+
+
+      <section class="section" data-reveal>
+        <div class="section-head">
+          <h2>いま作っているゲーム</h2>
+          <p class="eyebrow">FEATURED</p>
+        </div>
+        <article class="alakazar-feature px-window hover-card">
+          <a class="alakazar-feature__image" href="alakazar.html" tabindex="-1" aria-hidden="true">
+            <img src="pictures/alakazar/thumbnail.png" alt="" width="512" height="512" loading="lazy">
+          </a>
+          <div class="alakazar-feature__body">
+            <p class="alakazar-eyebrow">友人と二人で制作した初のオリジナルゲーム</p>
+            <h3 class="alakazar-feature__title"><a href="alakazar.html">ALAKAZAR</a></h3>
+            <p class="alakazar-feature__tagline">監獄都市を、一手ずつ突破せよ。</p>
+            <p>武器ごとに異なる移動・攻撃範囲と妖精の力を使い、敵の攻撃予告を読みながら戦うターン制タクティクスローグライク。</p>
+            <div class="alakazar-status" aria-label="公開状況">
+              <span>体験版公開中</span>
+              <span>Steamストアページ近日公開予定</span>
+            </div>
+            <span class="alakazar-feature__link" aria-hidden="true">作品の詳細を見る</span>
+          </div>
+        </article>
+      </section>
+
     </div>
-  </div>
-
-  <div class="canvas-container">
-    <canvas id="unity-canvas" width="960" height="600" aria-label="3D avatar viewer"></canvas>
-  </div>
-
-  <div class="menu-container">
-    <img src="pictures/menuA01.png" alt="Menu" class="no-effect">
-    <div class="menu-images">
-      <img src="pictures/menuB02.png" alt="自己紹介" class="shift-left-1" id="menuB02"
-        onmouseover="changeImage('pictures/menuA02.png', 'menuB02')"
-        onmouseout="changeImage('pictures/menuB02.png', 'menuB02')" onclick="navigateToIntro()">
-      <img src="pictures/menuB03.png" alt="SKILL" class="shift-left-2" id="menuB03"
-        onmouseover="changeImage('pictures/menuA03.png', 'menuB03')"
-        onmouseout="changeImage('pictures/menuB03.png', 'menuB03')" onclick="navigateToSkills()">
-      <img src="pictures/menuB04.png" alt="ギャラリー" class="shift-left-3" id="menuB04"
-        onmouseover="changeImage('pictures/menuA04.png', 'menuB04')"
-        onmouseout="changeImage('pictures/menuB04.png', 'menuB04')" onclick="navigateToGallery()">
-    </div>
-  </div>
-
-  <div class="content">
-    <h1>かぶとの制作ポートフォリオ</h1>
-    <p>
-      Webアプリ、AI活用、Unity・VRChat、ハードウェア連携など、これまで取り組んできた制作と技術経験をまとめたポートフォリオです。
-      企画から画面設計、実装、発表までを通して、触る人や見せる相手に合わせた体験づくりを大切にしています。
-    </p>
-    <p>
-      自己紹介では制作姿勢と経歴、SKILLでは扱える技術、ギャラリーでは実際の制作物を紹介しています。
-      上のメニューから各ページへ移動できます。
-    </p>
-    <p>
-      上部のVRMモデルは、このページの案内役として配置しています。
-      ページごとの短い紹介や表情、会話モードも含めて、ポートフォリオ自体を少し触れる体験として見せるための要素です。
-    </p>
-  </div>
-
-  <script type="module" src="JS/vrm-viewer.js"></script>
-  <script src="JS/index.js" async defer></script>
+  </main>
 
   <footer class="footer">
-    <div class="footer-content md-flex md-justify-between">
-      <a href="index.html" class="footer__logo">
-        <img src="pictures/K_rogo2.png" width="180" height="80" alt="K Logo">
-      </a>
-      <ul class="footer__navi flex">
+    <div class="footer-content">
+      <a class="brand" href="index.html" data-optional-wrap aria-label="KABUTO PORTFOLIO トップへ">
+      <img class="brand__icon" src="pictures/icon/kabuto-pixel.png" alt="" width="40" height="40" data-optional>
+      <span class="brand__name">KABUTO<span> PORTFOLIO</span></span>
+    </a>
+      <ul class="footer__navi">
         <li><a href="introduction.html">自己紹介</a></li>
         <li><a href="skills.html">SKILL</a></li>
-        <li><a href="gallery.html">ギャラリー</a></li>
+        <li><a href="gallery.html">GALLERY</a></li>
+        <li><a href="alakazar.html">ALAKAZAR</a></li>
       </ul>
+      <ul class="site-social site-social--footer" aria-label="外部リンク">
+      <li><a class="px-button" href="https://www.youtube.com/@user-py3rf8lu5t" target="_blank" rel="noopener noreferrer">YouTube</a></li>
+      <li><a class="px-button" href="https://twitter.com/Kabuto0421" target="_blank" rel="noopener noreferrer">X</a></li>
+      <li><a class="px-button" href="https://github.com/Kabuto0421" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+      <li><a class="px-button" href="https://docs.google.com/forms/d/e/1FAIpQLSekCt8pvi2nPJa1sdYpRITzwiwz6pBY73iSDtWFSTQgtgdBtw/viewform?usp=sf_link" target="_blank" rel="noopener noreferrer">お問い合わせ</a></li>
+    </ul>
     </div>
-    <hr>
-    <p class="copyright">
-      © 2026 <a href="index.html">Kabuto</a> All Rights Reserved.
-    </p>
+    <p class="copyright">© 2026 <a href="index.html">Kabuto</a> All Rights Reserved.</p>
   </footer>
+
+  <script type="module" src="JS/pixel-scene.js"></script>
+  <script type="module" src="JS/vrm-viewer.js"></script>
+  <script src="JS/site.js" defer></script>
 </body>
 
 </html>

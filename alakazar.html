@@ -2,35 +2,42 @@
 <html lang="ja">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="ALAKAZARは、武器ごとに異なる移動・攻撃範囲と妖精の力を使って監獄都市を突破するターン制タクティクスローグライクです。体験版を公開中。">
-    <title>ALAKAZAR - かぶとの住処</title>
-    <link rel="shortcut icon" type="image/png" sizes="96x96" href="pictures/favicon-96x96.png">
-    <link rel="stylesheet" href="CSS/style.css?v=20260512-2">
-    <link rel="stylesheet" href="CSS/alakazar.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ALAKAZAR - KABUTO PORTFOLIO</title>
+  <meta name="description" content="ALAKAZARは、武器ごとに異なる移動・攻撃範囲と妖精の力を使って監獄都市を突破するターン制タクティクスローグライクです。体験版を公開中。">
+  <meta name="theme-color" content="#080b15">
+  <link rel="icon" type="image/png" href="pictures/icon/favicon.png">
+  <link rel="apple-touch-icon" href="pictures/icon/kabuto-pixel.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="CSS/style.css?v=20261018">
+  <link rel="stylesheet" href="CSS/alakazar.css?v=20261018">
+  <script>document.documentElement.classList.add("js");</script>
 </head>
 
-<body>
-    <header class="header-images">
-        <a href="index.html" class="site-home-link"><span class="site-title">Kabuto Portfolio</span></a>
-        <div class="social-icons">
-            <a href="https://www.youtube.com/@user-py3rf8lu5t" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
-                <img src="pictures/youtube.png" alt="" class="youtube-image">
-            </a>
-            <a href="https://twitter.com/Kabuto0421" target="_blank" rel="noopener noreferrer" aria-label="X">
-                <img src="pictures/twitter.png" alt="" class="twitter-image">
-            </a>
-            <a href="https://github.com/Kabuto0421" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-                <img src="pictures/github.png" alt="" class="github-image">
-            </a>
-        </div>
-    </header>
+<body data-page="alakazar">
+  <a class="skip-link" href="#main">本文へスキップ</a>
+  <header class="site-header">
+    <a class="brand" href="index.html" data-optional-wrap aria-label="KABUTO PORTFOLIO トップへ">
+      <img class="brand__icon" src="pictures/icon/kabuto-pixel.png" alt="" width="40" height="40" data-optional>
+      <span class="brand__name">KABUTO<span> PORTFOLIO</span></span>
+    </a>
+    <nav class="site-nav" aria-label="メインメニュー">
+      <a href="introduction.html" data-guide-text="制作で大切にしていることや、これまでの経歴・受賞歴を紹介しています。" data-guide-face="relaxed">自己紹介</a>
+      <a href="skills.html" data-guide-text="扱える技術と、得意な作り方を整理しています。" data-guide-face="relaxed">SKILL</a>
+      <a href="gallery.html" data-guide-text="ハッカソンや個人開発で作ってきた作品を並べています。" data-guide-face="relaxed">GALLERY</a>
+    </nav>
+    <ul class="site-social" aria-label="外部リンク">
+      <li><a class="px-button" href="https://www.youtube.com/@user-py3rf8lu5t" target="_blank" rel="noopener noreferrer">YouTube</a></li>
+      <li><a class="px-button" href="https://twitter.com/Kabuto0421" target="_blank" rel="noopener noreferrer">X</a></li>
+      <li><a class="px-button" href="https://github.com/Kabuto0421" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+      <li><a class="px-button" href="https://docs.google.com/forms/d/e/1FAIpQLSekCt8pvi2nPJa1sdYpRITzwiwz6pBY73iSDtWFSTQgtgdBtw/viewform?usp=sf_link" target="_blank" rel="noopener noreferrer">お問い合わせ</a></li>
+    </ul>
+  </header>
 
-    <main class="content alakazar-article">
+  <main id="main" class="content alakazar-article">
         <nav class="alakazar-breadcrumb" aria-label="パンくずリスト">
             <a href="gallery.html">Gallery</a><span aria-hidden="true">/</span><span>ALAKAZAR</span>
         </nav>
@@ -115,18 +122,29 @@
         </div>
     </main>
 
-    <footer class="footer">
-        <div class="footer-content md-flex md-justify-between">
-            <a href="index.html" class="footer__logo"><img src="pictures/K_rogo2.png" width="180" height="80" alt="K Logo"></a>
-            <ul class="footer__navi flex">
-                <li><a href="introduction.html">自己紹介</a></li>
-                <li><a href="skills.html">SKILL</a></li>
-                <li><a href="gallery.html">ギャラリー</a></li>
-            </ul>
-        </div>
-        <hr>
-        <p class="copyright">© 2026 <a href="index.html">Kabuto</a> All Rights Reserved.</p>
-    </footer>
+  <footer class="footer">
+    <div class="footer-content">
+      <a class="brand" href="index.html" data-optional-wrap aria-label="KABUTO PORTFOLIO トップへ">
+      <img class="brand__icon" src="pictures/icon/kabuto-pixel.png" alt="" width="40" height="40" data-optional>
+      <span class="brand__name">KABUTO<span> PORTFOLIO</span></span>
+    </a>
+      <ul class="footer__navi">
+        <li><a href="introduction.html">自己紹介</a></li>
+        <li><a href="skills.html">SKILL</a></li>
+        <li><a href="gallery.html">GALLERY</a></li>
+        <li><a href="alakazar.html">ALAKAZAR</a></li>
+      </ul>
+      <ul class="site-social site-social--footer" aria-label="外部リンク">
+      <li><a class="px-button" href="https://www.youtube.com/@user-py3rf8lu5t" target="_blank" rel="noopener noreferrer">YouTube</a></li>
+      <li><a class="px-button" href="https://twitter.com/Kabuto0421" target="_blank" rel="noopener noreferrer">X</a></li>
+      <li><a class="px-button" href="https://github.com/Kabuto0421" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+      <li><a class="px-button" href="https://docs.google.com/forms/d/e/1FAIpQLSekCt8pvi2nPJa1sdYpRITzwiwz6pBY73iSDtWFSTQgtgdBtw/viewform?usp=sf_link" target="_blank" rel="noopener noreferrer">お問い合わせ</a></li>
+    </ul>
+    </div>
+    <p class="copyright">© 2026 <a href="index.html">Kabuto</a> All Rights Reserved.</p>
+  </footer>
+
+  <script src="JS/site.js" defer></script>
 </body>
 
 </html>

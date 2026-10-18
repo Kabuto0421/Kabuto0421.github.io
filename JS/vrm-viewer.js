@@ -5,182 +5,190 @@ import { VRMLoaderPlugin, VRMUtils } from "https://esm.sh/@pixiv/three-vrm@3.3.6
 
 const MODEL_URL = "assets/kabutomodel.vrm";
 
-const canvas = document.querySelector("#unity-canvas");
-const container = document.querySelector(".canvas-container");
+const canvas = document.querySelector("#vrm-canvas");
+const container = canvas?.closest(".vrm-container");
 
 if (!canvas || !container) {
   throw new Error("VRM viewer target was not found.");
 }
 
-container.classList.add("vrm-container");
-canvas.classList.add("vrm-canvas");
+const stage = container.closest(".stage") ?? container;
+const initialCamera = container.dataset.camera ?? "face";
+const coarsePointer = window.matchMedia("(pointer: coarse)");
 
 const status = document.createElement("p");
 status.className = "vrm-status";
-status.textContent = "Loading avatar...";
+status.textContent = "NOW LOADING";
 container.appendChild(status);
 
+// Guide dialogue window: use the one placed in the page, or build one inside the stage.
+let guideBox = document.querySelector("[data-guide]");
+if (!guideBox) {
+  guideBox = document.createElement("div");
+  guideBox.className = "guide-box px-window";
+  guideBox.dataset.guide = "";
+  guideBox.innerHTML = `<p class="guide-box__name">かぶと</p><p class="guide-box__text"></p>`;
+  stage.appendChild(guideBox);
+}
+const guideText = guideBox.querySelector(".guide-box__text");
+guideBox.setAttribute("aria-live", "polite");
+
+const talkForm = document.createElement("form");
+talkForm.className = "guide-talk";
+talkForm.hidden = true;
+talkForm.innerHTML = `
+  <label class="visually-hidden" for="guide-talk-input">喋らせたい言葉</label>
+  <input id="guide-talk-input" class="guide-talk__input" type="text" maxlength="90" placeholder="喋らせたい言葉を入力" autocomplete="off">
+  <button class="guide-talk__submit px-button" type="submit">喋る</button>
+`;
+guideBox.appendChild(talkForm);
+const talkInput = talkForm.querySelector("input");
+
 const controlsPanel = document.createElement("div");
-controlsPanel.className = "vrm-controls";
+controlsPanel.className = "vrm-controls is-collapsed";
 controlsPanel.innerHTML = `
-  <button class="vrm-controls-toggle" type="button" aria-expanded="true">UI非表示</button>
-  <div class="vrm-control-group" aria-label="Camera">
-    <button class="vrm-button is-active" type="button" data-camera="full">全身</button>
-    <button class="vrm-button" type="button" data-camera="face">顔アップ</button>
-    <button class="vrm-button" type="button" data-talk-toggle>会話</button>
-  </div>
-  <div class="vrm-control-group" aria-label="Expression">
-    <button class="vrm-button is-active" type="button" data-expression="neutral">通常</button>
-    <button class="vrm-button" type="button" data-expression="blink">まばたき</button>
-    <button class="vrm-button" type="button" data-expression="angry">怒り</button>
-    <button class="vrm-button" type="button" data-expression="surprised">驚き</button>
-    <button class="vrm-button" type="button" data-expression="sad">悲しみ</button>
-    <button class="vrm-button" type="button" data-expression="relaxed">楽しい</button>
-    <button class="vrm-button" type="button" data-expression="happy">喜び</button>
+  <button class="vrm-controls-toggle px-button" type="button" aria-expanded="false" aria-controls="vrm-control-body">
+    <span aria-hidden="true">▼</span> AVATAR
+  </button>
+  <div class="vrm-control-body" id="vrm-control-body">
+    <p class="vrm-control-label">CAMERA</p>
+    <div class="vrm-control-group" role="group" aria-label="カメラ">
+      <button class="px-chip" type="button" data-camera="full">全身</button>
+      <button class="px-chip" type="button" data-camera="face">顔アップ</button>
+      <button class="px-chip" type="button" data-render-toggle aria-pressed="true">DOT</button>
+    </div>
+    <p class="vrm-control-label">FACE</p>
+    <div class="vrm-control-group" role="group" aria-label="表情">
+      <button class="px-chip is-active" type="button" data-expression="neutral">通常</button>
+      <button class="px-chip" type="button" data-expression="blink">まばたき</button>
+      <button class="px-chip" type="button" data-expression="angry">怒り</button>
+      <button class="px-chip" type="button" data-expression="surprised">驚き</button>
+      <button class="px-chip" type="button" data-expression="sad">悲しみ</button>
+      <button class="px-chip" type="button" data-expression="relaxed">楽しい</button>
+      <button class="px-chip" type="button" data-expression="happy">喜び</button>
+    </div>
+    <p class="vrm-control-label">TALK</p>
+    <div class="vrm-control-group">
+      <button class="px-chip" type="button" data-talk-toggle aria-pressed="false">会話モード</button>
+    </div>
   </div>
 `;
-container.appendChild(controlsPanel);
-
-const pageGuide = document.createElement("div");
-pageGuide.className = "vrm-page-guide";
-pageGuide.setAttribute("aria-live", "polite");
-container.appendChild(pageGuide);
-
-const talkPanel = document.createElement("div");
-talkPanel.className = "vrm-talk-panel";
-talkPanel.hidden = true;
-talkPanel.innerHTML = `
-  <button class="vrm-talk-close" type="button">閉じる</button>
-  <div class="vrm-talk-box" aria-live="polite"></div>
-  <form class="vrm-talk-form">
-    <input class="vrm-talk-input" type="text" maxlength="90" placeholder="喋らせたい言葉を入力">
-    <button class="vrm-talk-submit" type="submit">喋る</button>
-  </form>
-`;
-container.appendChild(talkPanel);
-
-const talkBox = talkPanel.querySelector(".vrm-talk-box");
-const talkForm = talkPanel.querySelector(".vrm-talk-form");
-const talkInput = talkPanel.querySelector(".vrm-talk-input");
-const talkClose = talkPanel.querySelector(".vrm-talk-close");
+stage.appendChild(controlsPanel);
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x18212c);
-scene.fog = new THREE.Fog(0x18212c, 4.5, 9);
 
 const camera = new THREE.PerspectiveCamera(28, 1, 0.1, 100);
 camera.position.set(0, 1.35, 3.6);
 
 const renderer = new THREE.WebGLRenderer({
   canvas,
-  antialias: true,
-  alpha: false,
+  antialias: false,
+  alpha: true,
 });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setClearColor(0x000000, 0);
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.enablePan = false;
-controls.minDistance = 1.5;
-controls.maxDistance = 5.5;
+controls.enableZoom = false;
 controls.target.set(0, 1.2, 0);
 
-const keyLight = new THREE.DirectionalLight(0xffffff, 2.8);
-keyLight.position.set(1.2, 2.8, 3.0);
-scene.add(keyLight);
-
-const fillLight = new THREE.DirectionalLight(0x9fe7ff, 1.8);
-fillLight.position.set(-2.5, 1.9, 1.8);
-scene.add(fillLight);
-
-const rimLight = new THREE.DirectionalLight(0xff8bd2, 1.6);
-rimLight.position.set(2.5, 1.4, -2.5);
-scene.add(rimLight);
-
-scene.add(new THREE.HemisphereLight(0xffffff, 0x3b4560, 2.2));
-
-const stage = new THREE.Group();
-scene.add(stage);
-
-const floor = new THREE.Mesh(
-  new THREE.CircleGeometry(1.8, 64),
-  new THREE.MeshStandardMaterial({
-    color: 0x344252,
-    roughness: 0.8,
-    metalness: 0.1,
-  }),
-);
-floor.rotation.x = -Math.PI / 2;
-floor.position.y = -0.02;
-stage.add(floor);
-
-const grid = new THREE.GridHelper(3.6, 18, 0x54d7ff, 0x526270);
-grid.position.y = 0.002;
-stage.add(grid);
-
-const backPanel = new THREE.Mesh(
-  new THREE.PlaneGeometry(4.8, 2.8),
-  new THREE.MeshBasicMaterial({
-    color: 0x253446,
-    transparent: true,
-    opacity: 0.64,
-  }),
-);
-backPanel.position.set(0, 1.35, -1.25);
-stage.add(backPanel);
-
-for (const [x, y, width, color] of [
-  [-1.35, 1.95, 1.15, 0x58d8ff],
-  [1.22, 1.58, 1.45, 0xff8bd2],
-  [0.0, 0.85, 2.25, 0x8effb5],
-]) {
-  const strip = new THREE.Mesh(
-    new THREE.PlaneGeometry(width, 0.035),
-    new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.9 }),
-  );
-  strip.position.set(x, y, -1.23);
-  stage.add(strip);
+function syncTouchControls() {
+  // On touch screens the canvas must not swallow vertical scrolling.
+  controls.enabled = !coarsePointer.matches;
+  canvas.style.touchAction = coarsePointer.matches ? "pan-y" : "none";
 }
 
+const keyLight = new THREE.DirectionalLight(0xfff3dc, 2.6);
+keyLight.position.set(-1.6, 2.8, 3.0);
+scene.add(keyLight);
+
+const forestLight = new THREE.DirectionalLight(0x8dffc0, 1.2);
+forestLight.position.set(-3, 1.6, 1.2);
+scene.add(forestLight);
+
+const cityLight = new THREE.DirectionalLight(0xff5c9a, 1.9);
+cityLight.position.set(3, 1.4, -1.5);
+scene.add(cityLight);
+
+const cyanRim = new THREE.DirectionalLight(0x33f0f0, 1.4);
+cyanRim.position.set(1.5, 2.2, -3);
+scene.add(cyanRim);
+
+scene.add(new THREE.HemisphereLight(0xdfe8ff, 0x2a1630, 1.9));
+
+const shadow = new THREE.Mesh(
+  new THREE.CircleGeometry(0.42, 24),
+  new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.38, depthWrite: false }),
+);
+shadow.rotation.x = -Math.PI / 2;
+shadow.scale.set(1, 0.55, 1);
+shadow.position.y = 0.002;
+scene.add(shadow);
+
 let currentVrm = null;
-let leftUpperArm = null;
-let rightUpperArm = null;
-let leftLowerArm = null;
-let rightLowerArm = null;
 let neck = null;
 let head = null;
-let lookTarget = new THREE.Vector2(0, 0);
+const lookTarget = new THREE.Vector2(0, 0);
+const lookCurrent = new THREE.Vector2(0, 0);
 let expressionMode = "neutral";
-let cameraMode = "full";
-let isTalkPanelOpen = false;
+let cameraMode = initialCamera;
+let isTalkMode = false;
 let speechText = "";
 let visibleSpeech = "";
 let speechIndex = 0;
 let lastTypeTime = 0;
 let isSpeaking = false;
-let speechTarget = null;
 let mouthShape = "aa";
 let mouthIntensity = 0;
 let modelBounds = null;
+let pixelMode = readPixelPreference();
 const desiredCameraPosition = new THREE.Vector3().copy(camera.position);
 const desiredCameraTarget = new THREE.Vector3().copy(controls.target);
 const clock = new THREE.Clock();
-const mobileControlsQuery = window.matchMedia("(max-width: 768px)");
 const pageGuideMessages = {
-  "/": "ようこそ。制作姿勢、扱える技術、これまでの作品をここから案内します。",
-  "/index.html": "ようこそ。制作姿勢、扱える技術、これまでの作品をここから案内します。",
-  "/introduction.html": "自己紹介では、制作姿勢とこれまでの経験をまとめています。",
-  "/skills.html": "Skillsでは、扱える技術と得意な作り方を整理しています。",
-  "/gallery.html": "Galleryでは、これまで作ってきた作品を紹介しています。",
+  index: "ようこそ、かぶとの住処へ。メニューから見たいページを選んでください。",
+  introduction: "自己紹介では、制作姿勢とこれまでの経験をまとめています。",
+  skills: "SKILLでは、扱える技術と得意な作り方を整理しています。",
+  gallery: "GALLERYでは、これまで作ってきた作品を紹介しています。気になるものを選んでみてください。",
 };
-const pageGuideText = pageGuideMessages[window.location.pathname] ?? "気になる項目を選ぶと、制作内容を見られます。";
+const pageGuideText = pageGuideMessages[document.body.dataset.page] ?? "気になる項目を選ぶと、制作内容を見られます。";
+
+function readPixelPreference() {
+  try {
+    return window.localStorage.getItem("kabuto-vrm-render") !== "hd";
+  } catch {
+    return true;
+  }
+}
+
+function savePixelPreference() {
+  try {
+    window.localStorage.setItem("kabuto-vrm-render", pixelMode ? "dot" : "hd");
+  } catch {
+    // Storage can be unavailable (private mode); the toggle still works for this visit.
+  }
+}
+
+function pixelSize() {
+  const scenePx = parseFloat(getComputedStyle(stage).getPropertyValue("--scene-px")) || 4;
+  return Math.max(2, Math.round(scenePx * 0.75));
+}
 
 function resizeRenderer() {
-  const width = Math.max(container.clientWidth, 320);
-  const height = Math.max(container.clientHeight, 220);
+  const width = Math.max(container.clientWidth, 120);
+  const height = Math.max(container.clientHeight, 120);
 
-  renderer.setSize(width, height, false);
+  if (pixelMode) {
+    const size = pixelSize();
+    renderer.setPixelRatio(1);
+    renderer.setSize(Math.round(width / size), Math.round(height / size), false);
+  } else {
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(width, height, false);
+  }
+  container.classList.toggle("is-pixel", pixelMode);
   camera.aspect = width / height;
   camera.updateProjectionMatrix();
 }
@@ -191,7 +199,8 @@ function calculateModelBounds(vrm) {
   const center = box.getCenter(new THREE.Vector3());
   const maxSize = Math.max(size.x, size.y, size.z);
 
-  modelBounds = { center, size, maxSize };
+  modelBounds = { center, size, maxSize, bottom: box.min.y };
+  shadow.position.set(center.x, box.min.y + 0.002, center.z);
   camera.near = Math.max(maxSize / 100, 0.01);
   camera.far = maxSize * 14;
   camera.updateProjectionMatrix();
@@ -206,11 +215,11 @@ function setCameraMode(nextMode, immediate = false) {
   const { center, size, maxSize } = modelBounds;
   const distance = maxSize / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)));
   const isFace = cameraMode === "face";
-  const targetY = isFace ? center.y + size.y * 0.25 : center.y + size.y * 0.08;
-  const distanceScale = isFace ? 0.66 : 1.18;
+  const targetY = isFace ? center.y + size.y * 0.24 : center.y + size.y * 0.02;
+  const distanceScale = isFace ? 0.74 : 1.08;
 
   desiredCameraTarget.set(center.x, targetY, center.z);
-  desiredCameraPosition.set(center.x, targetY + (isFace ? -0.06 : -size.y * 0.02), center.z + distance * distanceScale);
+  desiredCameraPosition.set(center.x, targetY + (isFace ? 0 : size.y * 0.04), center.z + distance * distanceScale);
 
   controls.minDistance = Math.max(distance * 0.25, 0.45);
   controls.maxDistance = distance * 1.8;
@@ -220,23 +229,32 @@ function setCameraMode(nextMode, immediate = false) {
     controls.target.copy(desiredCameraTarget);
     controls.update();
   }
+  setActiveButton("camera", cameraMode);
 }
 
 function setActiveButton(kind, value) {
   controlsPanel.querySelectorAll(`[data-${kind}]`).forEach((button) => {
-    button.classList.toggle("is-active", button.dataset[kind] === value);
+    const active = button.dataset[kind] === value;
+    button.classList.toggle("is-active", active);
+    button.setAttribute("aria-pressed", String(active));
   });
 }
 
 function setControlsCollapsed(isCollapsed) {
   controlsPanel.classList.toggle("is-collapsed", isCollapsed);
   const button = controlsPanel.querySelector(".vrm-controls-toggle");
-  button.textContent = isCollapsed ? "UI表示" : "UI非表示";
   button.setAttribute("aria-expanded", String(!isCollapsed));
+  button.querySelector("span").textContent = isCollapsed ? "▼" : "▲";
 }
 
-function syncControlsForViewport() {
-  setControlsCollapsed(true);
+function setPixelMode(next) {
+  pixelMode = next;
+  const button = controlsPanel.querySelector("[data-render-toggle]");
+  button.textContent = pixelMode ? "DOT" : "HD";
+  button.setAttribute("aria-pressed", String(pixelMode));
+  button.classList.toggle("is-active", pixelMode);
+  savePixelPreference();
+  resizeRenderer();
 }
 
 function getBone(vrm, name) {
@@ -244,10 +262,10 @@ function getBone(vrm, name) {
 }
 
 function applyRestPose(vrm) {
-  leftUpperArm = getBone(vrm, "leftUpperArm");
-  rightUpperArm = getBone(vrm, "rightUpperArm");
-  leftLowerArm = getBone(vrm, "leftLowerArm");
-  rightLowerArm = getBone(vrm, "rightLowerArm");
+  const leftUpperArm = getBone(vrm, "leftUpperArm");
+  const rightUpperArm = getBone(vrm, "rightUpperArm");
+  const leftLowerArm = getBone(vrm, "leftLowerArm");
+  const rightLowerArm = getBone(vrm, "rightLowerArm");
   neck = getBone(vrm, "neck");
   head = getBone(vrm, "head");
 
@@ -329,45 +347,34 @@ function getMouthShape(character) {
   return "aa";
 }
 
-function startSpeech(text) {
-  speechText = text.trim();
-  if (!speechText) {
+function say(text, expression) {
+  const next = String(text ?? "").trim();
+  if (!next || (next === speechText && isSpeaking)) {
     return;
   }
 
+  speechText = next;
+  if (expression) {
+    expressionMode = expression;
+    setActiveButton("expression", expressionMode);
+  }
   visibleSpeech = "";
   speechIndex = 0;
   lastTypeTime = performance.now();
   isSpeaking = true;
-  speechTarget = talkBox;
-  talkBox.textContent = "";
-  talkPanel.hidden = false;
-  setTalkPanelOpen(true);
+  guideText.textContent = "";
+  guideBox.classList.add("is-speaking");
 }
 
-function startGuideSpeech(text) {
-  speechText = text.trim();
-  if (!speechText) {
-    return;
-  }
-
-  expressionMode = "relaxed";
-  setActiveButton("expression", expressionMode);
-  visibleSpeech = "";
-  speechIndex = 0;
-  lastTypeTime = performance.now();
-  isSpeaking = true;
-  speechTarget = pageGuide;
-  pageGuide.textContent = "";
-  container.classList.add("has-page-guide");
-}
-
-function setTalkPanelOpen(isOpen) {
-  isTalkPanelOpen = isOpen;
-  talkPanel.hidden = !isTalkPanelOpen;
-  container.classList.toggle("is-talk-open", isTalkPanelOpen);
-  controlsPanel.querySelector("[data-talk-toggle]")?.classList.toggle("is-active", isTalkPanelOpen);
-  if (isTalkPanelOpen) {
+function setTalkMode(isOpen) {
+  isTalkMode = isOpen;
+  talkForm.hidden = !isTalkMode;
+  guideBox.classList.toggle("is-talk", isTalkMode);
+  const button = controlsPanel.querySelector("[data-talk-toggle]");
+  button.classList.toggle("is-active", isTalkMode);
+  button.setAttribute("aria-pressed", String(isTalkMode));
+  if (isTalkMode) {
+    say("喋ってほしい言葉を入れてね。");
     talkInput.focus();
   }
 }
@@ -379,22 +386,21 @@ function updateTypewriter(now) {
 
   const currentCharacter = speechText[speechIndex];
   const isPause = "。、,.!?！？…".includes(currentCharacter);
-  const interval = isPause ? 180 : 48;
+  const interval = isPause ? 160 : 42;
 
   if (now - lastTypeTime < interval) {
     return;
   }
 
   visibleSpeech += currentCharacter;
-  if (speechTarget) {
-    speechTarget.textContent = visibleSpeech;
-  }
+  guideText.textContent = visibleSpeech;
   mouthShape = getMouthShape(currentCharacter);
   speechIndex += 1;
   lastTypeTime = now;
 
   if (speechIndex >= speechText.length) {
     isSpeaking = false;
+    guideBox.classList.remove("is-speaking");
   }
 }
 
@@ -403,17 +409,18 @@ function updatePose(elapsed) {
     return;
   }
 
+  lookCurrent.lerp(lookTarget, 0.08);
   const sway = Math.sin(elapsed * 1.6);
-  currentVrm.scene.rotation.y = sway * 0.045 + lookTarget.x * 0.08;
+  currentVrm.scene.rotation.y = sway * 0.045 + lookCurrent.x * 0.1;
   currentVrm.scene.position.y = Math.sin(elapsed * 2.1) * 0.006;
 
   if (head) {
-    head.rotation.y = lookTarget.x * 0.28;
-    head.rotation.x = lookTarget.y * 0.16;
+    head.rotation.y = lookCurrent.x * 0.3;
+    head.rotation.x = lookCurrent.y * 0.18;
   }
   if (neck) {
-    neck.rotation.y = lookTarget.x * 0.12;
-    neck.rotation.x = 0.04 + lookTarget.y * 0.08;
+    neck.rotation.y = lookCurrent.x * 0.12;
+    neck.rotation.x = 0.04 + lookCurrent.y * 0.08;
   }
 
   updateExpression(currentVrm, elapsed);
@@ -451,11 +458,14 @@ controlsPanel.addEventListener("click", (event) => {
 
   if (button.dataset.camera) {
     setCameraMode(button.dataset.camera);
-    setActiveButton("camera", button.dataset.camera);
+  }
+
+  if (button.hasAttribute("data-render-toggle")) {
+    setPixelMode(!pixelMode);
   }
 
   if (button.hasAttribute("data-talk-toggle")) {
-    setTalkPanelOpen(!isTalkPanelOpen);
+    setTalkMode(!isTalkMode);
   }
 
   if (button.dataset.expression) {
@@ -464,35 +474,46 @@ controlsPanel.addEventListener("click", (event) => {
   }
 });
 
-talkPanel.addEventListener("pointerdown", (event) => {
-  event.stopPropagation();
-});
-
 talkForm.addEventListener("submit", (event) => {
   event.preventDefault();
-  startSpeech(talkInput.value);
+  say(talkInput.value);
   talkInput.value = "";
 });
 
-talkClose.addEventListener("click", () => {
-  setTalkPanelOpen(false);
-});
-
-container.addEventListener("pointermove", (event) => {
+// The head follows the cursor anywhere on the page, not only over the canvas.
+window.addEventListener("pointermove", (event) => {
   const rect = container.getBoundingClientRect();
-  lookTarget.x = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
-  lookTarget.y = ((event.clientY - rect.top) / rect.height - 0.5) * 2;
+  const x = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
+  const y = ((event.clientY - (rect.top + rect.height * 0.25)) / rect.height) * 2;
+  lookTarget.set(THREE.MathUtils.clamp(x, -1, 1), THREE.MathUtils.clamp(y, -1, 1));
 });
 
-container.addEventListener("pointerleave", () => {
+document.addEventListener("pointerleave", () => {
   lookTarget.set(0, 0);
 });
 
-window.addEventListener("resize", resizeRenderer);
-mobileControlsQuery.addEventListener("change", syncControlsForViewport);
+// Other scripts (menu hover, gallery cards) make the guide speak.
+document.addEventListener("guide:say", (event) => {
+  if (!isTalkMode) {
+    say(event.detail?.text, event.detail?.expression);
+  }
+});
 
-resizeRenderer();
-syncControlsForViewport();
+stage.addEventListener("scene:flash", () => {
+  if (currentVrm && !isSpeaking && expressionMode === "relaxed") {
+    expressionMode = "surprised";
+    setTimeout(() => {
+      if (expressionMode === "surprised") expressionMode = "relaxed";
+    }, 600);
+  }
+});
+
+new ResizeObserver(resizeRenderer).observe(container);
+coarsePointer.addEventListener("change", syncTouchControls);
+
+syncTouchControls();
+setPixelMode(pixelMode);
+setActiveButton("camera", cameraMode);
 
 const loader = new GLTFLoader();
 loader.register((parser) => new VRMLoaderPlugin(parser));
@@ -507,21 +528,21 @@ loader.load(
     scene.add(currentVrm.scene);
     applyRestPose(currentVrm);
     calculateModelBounds(currentVrm);
-    const initialCameraMode = mobileControlsQuery.matches ? "full" : "face";
-    setCameraMode(initialCameraMode, true);
-    setActiveButton("camera", initialCameraMode);
+    setCameraMode(cameraMode, true);
     status.remove();
-    startGuideSpeech(pageGuideText);
+    container.classList.add("is-ready");
+    say(pageGuideText, "relaxed");
   },
   (progress) => {
     if (progress.total > 0) {
       const percent = Math.round((progress.loaded / progress.total) * 100);
-      status.textContent = `Loading avatar... ${percent}%`;
+      status.textContent = `NOW LOADING ${percent}%`;
     }
   },
   (error) => {
     console.error(error);
-    status.textContent = "Avatar could not be loaded. Check assets/kabutomodel.vrm.";
+    status.textContent = "アバターを読み込めませんでした";
+    say(pageGuideText);
   },
 );
 
