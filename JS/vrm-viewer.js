@@ -168,6 +168,8 @@ let lastLookUp = -Infinity;
 let lastCurious = -Infinity;
 let lastDizzy = -Infinity;
 let pokes = [];
+let pokeLockUntil = 0;
+let lastFlashSurprise = -Infinity;
 let calmTimer = 0;
 let spin = [];
 const desiredCameraPosition = new THREE.Vector3().copy(camera.position);
@@ -387,7 +389,7 @@ function getMouthShape(character) {
 const LINES = {
   poke1: "むっ、貴様か。見事な奇襲だ。褒めて使わそう。",
   poke3: "フハハ、貴様の好奇心、嫌いでないぞ。",
-  poke5: "💢貴様〜〜〜❗️❓我々をおちょくるにしても限度ってものがあるぞ❗️💢",
+  poke5: "そんなに連打するとこそがしいぞ❗️❗️限度ってものがあるんだ、全ての物事には❗️❗️",
   oddClick: "どうかしたか？我々にはそこに何もないように見えるが...",
   wake: "はっ！　眠ってなどいない。電子の海を巡回していたのだ！",
   dizzy: "ぐぬぬ…め、目が回る…！",
@@ -454,11 +456,19 @@ function hitsAvatar(clientX, clientY) {
 
 function poke() {
   const now = performance.now();
+  // After snapping at the visitor, clicks are ignored until it calms down.
+  if (now < pokeLockUntil) {
+    return;
+  }
   pokes = pokes.filter((time) => now - time < 4000);
   pokes.push(now);
+  // Only the newest reaction stays on screen, so rapid clicks don't pile effects up.
+  fx.clear();
   if (pokes.length >= 5) {
     pokes = [];
+    pokeLockUntil = now + 3500;
     setExpression("angry", { force: true });
+    freezeUntil = now + 700;
     sayReaction(LINES.poke5);
     calmDown(3500);
   } else if (pokes.length >= 3) {
@@ -797,7 +807,13 @@ document.addEventListener("guide:say", (event) => {
 });
 
 stage.addEventListener("scene:flash", () => {
+  // Lightning only startles the guide once in a while, not every strike.
+  const now = performance.now();
+  if (now - lastFlashSurprise < 60000 || Math.random() > 0.3) {
+    return;
+  }
   if (currentVrm && !isSpeaking && !sleeping && containerOnScreen() && (expressionMode === "relaxed" || expressionMode === "neutral")) {
+    lastFlashSurprise = now;
     const before = expressionMode;
     setExpression("surprised");
     const token = lastExpressionAt;
