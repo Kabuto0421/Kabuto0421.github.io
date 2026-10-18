@@ -12,8 +12,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="CSS/style.css?v=20261018">
-  <link rel="stylesheet" href="CSS/alakazar.css?v=20261018">
+  <link rel="stylesheet" href="CSS/style.css?v=20261018-3">
+  <link rel="stylesheet" href="CSS/alakazar.css?v=20261018-3">
   <script>document.documentElement.classList.add("js");</script>
 </head>
 
@@ -39,7 +39,7 @@
 
   <main id="main">
     <section class="stage stage--page" aria-labelledby="page-title">
-      <canvas class="pixel-scene" data-spot-x="0.72" data-poly-x="0.5" aria-hidden="true"></canvas>
+      <canvas class="pixel-scene" data-theme="kabuto" data-spot-x="0.72" data-poly-x="0.5" aria-hidden="true"></canvas>
       <div class="stage-heading">
         <p class="eyebrow">▶ WORKS</p>
         <h1 id="page-title">GALLERY</h1>
@@ -69,7 +69,7 @@
 
       <section class="section" data-reveal>
         <div class="section-head">
-          <h2>ALAKAZAR</h2>
+          <h2>いま作っているゲーム</h2>
           <p class="eyebrow">FEATURED</p>
         </div>
         <article class="alakazar-feature px-window hover-card">
@@ -78,7 +78,7 @@
           </a>
           <div class="alakazar-feature__body">
             <p class="alakazar-eyebrow">友人と二人で制作した初のオリジナルゲーム</p>
-            <h3 class="alakazar-feature__title"><a href="alakazar.html">ALAKAZAR</a></h3>
+            <h3 class="alakazar-feature__title"><a href="alakazar.html"><span class="alakazar-word" data-alakazar-word></span><span class="visually-hidden">ALAKAZAR</span></a></h3>
             <p class="alakazar-feature__tagline">監獄都市を、一手ずつ突破せよ。</p>
             <p>武器ごとに異なる移動・攻撃範囲と妖精の力を使い、敵の攻撃予告を読みながら戦うターン制タクティクスローグライク。</p>
             <div class="alakazar-status" aria-label="公開状況">
@@ -254,9 +254,9 @@
     <p class="copyright">© 2026 <a href="index.html">Kabuto</a> All Rights Reserved.</p>
   </footer>
 
-  <script type="module" src="JS/pixel-scene.js"></script>
-  <script type="module" src="JS/vrm-viewer.js"></script>
-  <script src="JS/site.js" defer></script>
+  <script type="module" src="JS/pixel-scene.js?v=20261018-3"></script>
+  <script type="module" src="JS/vrm-viewer.js?v=20261018-3"></script>
+  <script src="JS/site.js?v=20261018-3" defer></script>
 </body>
 
 </html>

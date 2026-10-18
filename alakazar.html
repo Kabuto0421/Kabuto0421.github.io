@@ -12,8 +12,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="CSS/style.css?v=20261018">
-  <link rel="stylesheet" href="CSS/alakazar.css?v=20261018">
+  <link rel="stylesheet" href="CSS/style.css?v=20261018-3">
+  <link rel="stylesheet" href="CSS/alakazar.css?v=20261018-3">
   <script>document.documentElement.classList.add("js");</script>
 </head>
 
@@ -37,7 +37,23 @@
     </ul>
   </header>
 
-  <main id="main" class="content alakazar-article">
+  <main id="main">
+    <section class="stage stage--page" aria-labelledby="page-title">
+      <canvas class="pixel-scene" data-theme="alakazar" data-spot-x="0.72" data-poly-x="0.5" aria-hidden="true"></canvas>
+      <div class="stage-heading">
+        <p class="eyebrow">▶ TURN-BASED TACTICS ROGUELIKE</p>
+        <h1 id="page-title" class="stage-heading__word"><span class="alakazar-word" data-alakazar-word></span><span class="visually-hidden">ALAKAZAR</span></h1>
+      </div>
+      <div class="vrm-container" data-camera="face">
+        <canvas id="vrm-canvas" aria-label="案内役のVRMアバター。ドラッグで回転できます"></canvas>
+      </div>
+      <div class="guide-box px-window" data-guide>
+        <p class="guide-box__name">かぶと</p>
+        <p class="guide-box__text">ALAKAZARは、友人と二人で制作中のターン制タクティクスローグライクです。体験版も遊べます！</p>
+      </div>
+    </section>
+
+    <div class="content alakazar-article">
         <nav class="alakazar-breadcrumb" aria-label="パンくずリスト">
             <a href="gallery.html">Gallery</a><span aria-hidden="true">/</span><span>ALAKAZAR</span>
         </nav>
@@ -45,8 +61,7 @@
         <div class="alakazar-hero">
             <div class="alakazar-hero__copy">
                 <p class="alakazar-eyebrow">TURN-BASED TACTICS ROGUELIKE</p>
-                <h1>ALAKAZAR</h1>
-                <p class="alakazar-hero__lead">監獄都市を、<br>一手ずつ突破せよ。</p>
+                <h2 class="alakazar-hero__lead">監獄都市を、<br>一手ずつ突破せよ。</h2>
                 <p>将棋や囲碁の発想を取り入れた、ターン制タクティクスローグライク。武器ごとに異なる移動・攻撃範囲と妖精の力を使い、敵の攻撃予告を読みながら戦います。</p>
                 <div class="alakazar-status" aria-label="公開状況">
                     <span>体験版公開中</span>
@@ -120,7 +135,9 @@
             <a class="alakazar-button alakazar-button--primary" href="https://unityroom.com/games/alakazar" target="_blank" rel="noopener noreferrer">体験版をプレイ <span aria-hidden="true">↗</span></a>
             <a class="alakazar-back-link" href="gallery.html">ギャラリーへ戻る <span aria-hidden="true">→</span></a>
         </div>
-    </main>
+    
+    </div>
+  </main>
 
   <footer class="footer">
     <div class="footer-content">
@@ -144,7 +161,9 @@
     <p class="copyright">© 2026 <a href="index.html">Kabuto</a> All Rights Reserved.</p>
   </footer>
 
-  <script src="JS/site.js" defer></script>
+  <script type="module" src="JS/pixel-scene.js?v=20261018-3"></script>
+  <script type="module" src="JS/vrm-viewer.js?v=20261018-3"></script>
+  <script src="JS/site.js?v=20261018-3" defer></script>
 </body>
 
 </html>
