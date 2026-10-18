@@ -3,6 +3,8 @@ import { GLTFLoader } from "https://esm.sh/three@0.164.1/examples/jsm/loaders/GL
 import { OrbitControls } from "https://esm.sh/three@0.164.1/examples/jsm/controls/OrbitControls.js";
 import { VRMLoaderPlugin, VRMUtils } from "https://esm.sh/@pixiv/three-vrm@3.3.6?deps=three@0.164.1";
 
+const { createFxLayer } = await import(new URL(`./vrm-fx.js${new URL(import.meta.url).search}`, import.meta.url));
+
 const MODEL_URL = "assets/kabutomodel.vrm";
 
 const canvas = document.querySelector("#vrm-canvas");
@@ -15,6 +17,7 @@ if (!canvas || !container) {
 const stage = container.closest(".stage") ?? container;
 const initialCamera = container.dataset.camera ?? "face";
 const coarsePointer = window.matchMedia("(pointer: coarse)");
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 const status = document.createElement("p");
 status.className = "vrm-status";
@@ -128,14 +131,14 @@ shadow.position.y = 0.002;
 scene.add(shadow);
 
 let currentVrm = null;
-let neck = null;
-let head = null;
+const bones = {};
 const lookTarget = new THREE.Vector2(0, 0);
 const lookCurrent = new THREE.Vector2(0, 0);
 let expressionMode = "neutral";
 let cameraMode = initialCamera;
 let isTalkMode = false;
 let speechText = "";
+let speechChars = [];
 let visibleSpeech = "";
 let speechIndex = 0;
 let lastTypeTime = 0;
@@ -144,6 +147,29 @@ let mouthShape = "aa";
 let mouthIntensity = 0;
 let modelBounds = null;
 let pixelMode = readPixelPreference();
+const fx = createFxLayer(container);
+const raycaster = new THREE.Raycaster();
+const pointerNdc = new THREE.Vector2();
+const headPoint = new THREE.Vector3();
+const headTopPoint = new THREE.Vector3();
+let freezeUntil = 0;
+let hopAt = 0;
+let hopPower = 0;
+let motionTime = 0;
+let tilt = 0;
+let tiltUntil = 0;
+let dizzyUntil = 0;
+let sleeping = false;
+let nextSnore = 0;
+let lastActivity = performance.now();
+let lastExpressionAt = performance.now();
+let lookUpSince = 0;
+let lastLookUp = -Infinity;
+let lastCurious = -Infinity;
+let lastDizzy = -Infinity;
+let pokes = [];
+let calmTimer = 0;
+let spin = [];
 const desiredCameraPosition = new THREE.Vector3().copy(camera.position);
 const desiredCameraTarget = new THREE.Vector3().copy(controls.target);
 const clock = new THREE.Clock();
@@ -262,33 +288,42 @@ function getBone(vrm, name) {
   return vrm.humanoid?.getNormalizedBoneNode(name) ?? null;
 }
 
-function applyRestPose(vrm) {
-  const leftUpperArm = getBone(vrm, "leftUpperArm");
-  const rightUpperArm = getBone(vrm, "rightUpperArm");
-  const leftLowerArm = getBone(vrm, "leftLowerArm");
-  const rightLowerArm = getBone(vrm, "rightLowerArm");
-  neck = getBone(vrm, "neck");
-  head = getBone(vrm, "head");
+// Poses per expression: rotations (x, y, z radians) of normalized humanoid bones.
+const POSE_BONES = ["spine", "chest", "neck", "head", "leftUpperArm", "rightUpperArm", "leftLowerArm", "rightLowerArm"];
+const ZERO = [0, 0, 0];
+const REST = {
+  leftUpperArm: [-0.08, 0, -0.95],
+  rightUpperArm: [-0.08, 0, 0.95],
+  leftLowerArm: [0, 0, -0.12],
+  rightLowerArm: [0, 0, 0.12],
+  neck: [0.04, 0, 0],
+};
+const POSES = {
+  neutral: REST,
+  happy: { ...REST, leftUpperArm: [0, 0, 0.75], rightUpperArm: [0, 0, -0.75], leftLowerArm: [0, 0, 0.35], rightLowerArm: [0, 0, -0.35], spine: [-0.05, 0, 0] },
+  relaxed: { ...REST, leftUpperArm: [-0.08, 0, -1.08], rightUpperArm: [-0.08, 0, 1.08], head: [0, 0, 0.12] },
+  surprised: { ...REST, leftUpperArm: [-0.2, 0, -0.3], rightUpperArm: [-0.2, 0, 0.3], leftLowerArm: [0, 0, 0.55], rightLowerArm: [0, 0, -0.55], spine: [-0.08, 0, 0], head: [-0.1, 0, 0] },
+  angry: { ...REST, leftUpperArm: [0.1, 0, -0.65], rightUpperArm: [0.1, 0, 0.65], leftLowerArm: [0, 0, -1.3], rightLowerArm: [0, 0, 1.3], spine: [0.07, 0, 0], head: [0.12, 0, 0] },
+  sad: { ...REST, leftUpperArm: [0.05, 0, -1.22], rightUpperArm: [0.05, 0, 1.22], spine: [0.08, 0, 0], neck: [0.08, 0, 0], head: [0.1, 0, -0.12] },
+  blink: { ...REST, rightUpperArm: [0, 0, -1.15], rightLowerArm: [0, 0, -0.25], head: [0, 0, -0.08] },
+  sleep: { ...REST, spine: [0.06, 0, 0], neck: [0.2, 0, 0], head: [0.25, 0, 0.18] },
+};
+// Motions layered on top of a pose.
+const GESTURES = {
+  blink: (t) => ({ rightLowerArm: [0, 0, Math.sin(t * 9) * 0.35] }),
+  happy: (t) => ({ leftLowerArm: [0, 0, Math.sin(t * 6) * 0.12], rightLowerArm: [0, 0, -Math.sin(t * 6) * 0.12] }),
+  angry: (t) => ({ spine: [0, 0, Math.sin(t * 40) * 0.012] }),
+  sleep: (t) => ({ head: [Math.sin(t * 1.2) * 0.05, 0, 0] }),
+  dizzy: (t) => ({ head: [Math.sin(t * 5) * 0.06, 0, Math.cos(t * 5) * 0.1] }),
+};
+const HOP = { happy: 0.035, surprised: 0.045, blink: 0.02 };
+const poseCurrent = Object.fromEntries(POSE_BONES.map((name) => [name, new THREE.Vector3()]));
 
-  if (leftUpperArm) {
-    leftUpperArm.rotation.z = -0.95;
-    leftUpperArm.rotation.x = -0.08;
+function initPose(vrm) {
+  for (const name of POSE_BONES) {
+    bones[name] = getBone(vrm, name);
+    poseCurrent[name].set(...(REST[name] ?? ZERO));
   }
-  if (rightUpperArm) {
-    rightUpperArm.rotation.z = 0.95;
-    rightUpperArm.rotation.x = -0.08;
-  }
-  if (leftLowerArm) {
-    leftLowerArm.rotation.z = -0.12;
-  }
-  if (rightLowerArm) {
-    rightLowerArm.rotation.z = 0.12;
-  }
-  if (neck) {
-    neck.rotation.x = 0.04;
-  }
-
-  vrm.humanoid?.update();
 }
 
 function updateExpression(vrm, elapsed) {
@@ -302,13 +337,13 @@ function updateExpression(vrm, elapsed) {
   mouthIntensity = THREE.MathUtils.lerp(mouthIntensity, talkingPulse, isSpeaking ? 0.55 : 0.18);
 
   const values = {
-    blink: expressionMode === "blink" ? 0.95 : Math.min(autoBlink, 1),
-    angry: expressionMode === "angry" ? 0.75 : 0,
-    surprised: expressionMode === "surprised" ? 0.9 : 0,
-    sad: expressionMode === "sad" ? 0.86 : 0,
-    relaxed: expressionMode === "relaxed" ? 0.85 : 0,
-    happy: expressionMode === "happy" ? 0.88 : 0,
-    aa: expressionMode === "surprised" ? 0.25 : 0,
+    blink: sleeping ? 1 : expressionMode === "blink" ? 0.95 : Math.min(autoBlink, 1),
+    angry: !sleeping && expressionMode === "angry" ? 0.75 : 0,
+    surprised: !sleeping && expressionMode === "surprised" ? 0.9 : 0,
+    sad: !sleeping && expressionMode === "sad" ? 0.86 : 0,
+    relaxed: !sleeping && expressionMode === "relaxed" ? 0.85 : 0,
+    happy: !sleeping && expressionMode === "happy" ? 0.88 : 0,
+    aa: !sleeping && expressionMode === "surprised" ? 0.25 : 0,
     ih: 0,
     ou: 0,
     ee: 0,
@@ -348,6 +383,111 @@ function getMouthShape(character) {
   return "aa";
 }
 
+// Lines the guide says when reacting.
+const LINES = {
+  poke1: "むっ、貴様か。見事な奇襲だ。褒めて使わそう。",
+  poke3: "フハハ、貴様の好奇心、嫌いでないぞ。",
+  poke5: "💢貴様〜〜〜❗️❓我々をおちょくるにしても限度ってものがあるぞ❗️💢",
+  oddClick: "……やれやれ。今回は見逃してやろう。",
+  wake: "はっ！　眠ってなどいない。電子の海を巡回していたのだ！",
+  dizzy: "ぐぬぬ…め、目が回る…！",
+  welcomeBack: "戻ったか。待ちくたびれたぞ。",
+};
+
+// Changing the face freezes the body for a beat (so the new face reads), then hops,
+// and pops a pixel emote next to the head.
+function setExpression(mode, { effect = true, force = false } = {}) {
+  if (!mode || (mode === expressionMode && !force)) {
+    return;
+  }
+  expressionMode = mode;
+  setActiveButton("expression", mode);
+  lastExpressionAt = performance.now();
+  if (!currentVrm) {
+    return;
+  }
+  freezeUntil = performance.now() + 380;
+  if (HOP[mode] && !reduceMotion.matches) {
+    hopAt = freezeUntil;
+    hopPower = HOP[mode];
+  }
+  if (effect) {
+    fx.spawn(mode);
+  }
+}
+
+function calmDown(after) {
+  clearTimeout(calmTimer);
+  calmTimer = setTimeout(() => setExpression("relaxed", { effect: false }), after);
+}
+
+function sayReaction(text) {
+  if (!isTalkMode) {
+    say(text);
+  }
+}
+
+function wake() {
+  lastActivity = performance.now();
+  if (!sleeping) {
+    return false;
+  }
+  sleeping = false;
+  setExpression("surprised", { force: true });
+  sayReaction(LINES.wake);
+  calmDown(2500);
+  return true;
+}
+
+function hitsAvatar(clientX, clientY) {
+  if (!currentVrm) {
+    return false;
+  }
+  const rect = canvas.getBoundingClientRect();
+  if (clientX < rect.left || clientX > rect.right || clientY < rect.top || clientY > rect.bottom) {
+    return false;
+  }
+  pointerNdc.set(((clientX - rect.left) / rect.width) * 2 - 1, -((clientY - rect.top) / rect.height) * 2 + 1);
+  raycaster.setFromCamera(pointerNdc, camera);
+  return raycaster.intersectObject(currentVrm.scene, true).length > 0;
+}
+
+function poke() {
+  const now = performance.now();
+  pokes = pokes.filter((time) => now - time < 4000);
+  pokes.push(now);
+  if (pokes.length >= 5) {
+    pokes = [];
+    setExpression("angry", { force: true });
+    sayReaction(LINES.poke5);
+    calmDown(3500);
+  } else if (pokes.length >= 3) {
+    setExpression("happy", { force: true });
+    sayReaction(LINES.poke3);
+    calmDown(3000);
+  } else {
+    setExpression("surprised", { force: true });
+    if (pokes.length === 1) sayReaction(LINES.poke1);
+    calmDown(2500);
+  }
+}
+
+function curious() {
+  const now = performance.now();
+  if (now - lastCurious < 2500) {
+    return;
+  }
+  lastCurious = now;
+  tiltUntil = now + 1800;
+  fx.spawn("question");
+  sayReaction(LINES.oddClick);
+}
+
+function containerOnScreen() {
+  const rect = container.getBoundingClientRect();
+  return rect.bottom > 0 && rect.top < window.innerHeight;
+}
+
 function say(text, expression) {
   const next = String(text ?? "").trim();
   if (!next || (next === speechText && isSpeaking)) {
@@ -355,9 +495,9 @@ function say(text, expression) {
   }
 
   speechText = next;
+  speechChars = Array.from(next);
   if (expression) {
-    expressionMode = expression;
-    setActiveButton("expression", expressionMode);
+    setExpression(expression);
   }
   visibleSpeech = "";
   speechIndex = 0;
@@ -385,7 +525,7 @@ function updateTypewriter(now) {
     return;
   }
 
-  const currentCharacter = speechText[speechIndex];
+  const currentCharacter = speechChars[speechIndex];
   const isPause = "。、,.!?！？…".includes(currentCharacter);
   const interval = isPause ? 160 : 42;
 
@@ -399,32 +539,124 @@ function updateTypewriter(now) {
   speechIndex += 1;
   lastTypeTime = now;
 
-  if (speechIndex >= speechText.length) {
+  if (speechIndex >= speechChars.length) {
     isSpeaking = false;
     guideBox.classList.remove("is-speaking");
   }
 }
 
-function updatePose(elapsed) {
+function updatePose(elapsed, delta, now) {
   if (!currentVrm) {
     return;
   }
 
-  lookCurrent.lerp(lookTarget, 0.08);
-  const sway = Math.sin(elapsed * 1.6);
-  currentVrm.scene.rotation.y = sway * 0.045 + lookCurrent.x * 0.1;
-  currentVrm.scene.position.y = Math.sin(elapsed * 2.1) * 0.006;
+  const frozen = now < freezeUntil;
+  if (!frozen) {
+    motionTime += delta;
+    // While dizzy the avatar stops tracking the cursor.
+    lookCurrent.lerp(now < dizzyUntil ? lookTarget.clone().multiplyScalar(0.15) : lookTarget, 0.08);
+  }
+  const t = motionTime;
+  const mode = sleeping ? "sleep" : expressionMode;
+  const pose = POSES[mode] ?? REST;
+  const gesture = (now < dizzyUntil ? GESTURES.dizzy : GESTURES[mode])?.(t) ?? {};
+  tilt += ((now < tiltUntil ? 0.22 : 0) - tilt) * 0.1;
 
-  if (head) {
-    head.rotation.y = lookCurrent.x * 0.3;
-    head.rotation.x = lookCurrent.y * 0.18;
+  for (const name of POSE_BONES) {
+    const node = bones[name];
+    if (!node) continue;
+    const current = poseCurrent[name];
+    if (!frozen) {
+      const [x, y, z] = pose[name] ?? ZERO;
+      current.x += (x - current.x) * 0.14;
+      current.y += (y - current.y) * 0.14;
+      current.z += (z - current.z) * 0.14;
+    }
+    const [gx, gy, gz] = gesture[name] ?? ZERO;
+    let rx = current.x + gx;
+    let ry = current.y + gy;
+    let rz = current.z + gz;
+    if (name === "head") {
+      ry += lookCurrent.x * 0.3;
+      rx += lookCurrent.y * 0.18;
+      rz += tilt;
+    } else if (name === "neck") {
+      ry += lookCurrent.x * 0.12;
+      rx += lookCurrent.y * 0.08;
+    } else if (name === "rightLowerArm" && isSpeaking && (mode === "relaxed" || mode === "neutral")) {
+      rz += Math.sin(t * 7) * 0.06;
+    }
+    node.rotation.set(rx, ry, rz);
   }
-  if (neck) {
-    neck.rotation.y = lookCurrent.x * 0.12;
-    neck.rotation.x = 0.04 + lookCurrent.y * 0.08;
+
+  const sway = Math.sin(t * 1.6);
+  currentVrm.scene.rotation.y = sway * 0.045 + lookCurrent.x * 0.1;
+  let y = Math.sin(t * 2.1) * 0.006;
+  if (hopAt && now >= hopAt) {
+    const progress = (now - hopAt) / 320;
+    if (progress >= 1) {
+      hopAt = 0;
+    } else {
+      y += Math.sin(Math.PI * progress) * hopPower;
+    }
   }
+  currentVrm.scene.position.y = y;
 
   updateExpression(currentVrm, elapsed);
+}
+
+// Keeps the effect layer pinned to the head and runs the idle behaviours.
+function updateReactions(now) {
+  if (!currentVrm || !modelBounds || !bones.head) {
+    return;
+  }
+  bones.head.getWorldPosition(headPoint);
+  headPoint.y += modelBounds.size.y * 0.1;
+  headTopPoint.copy(headPoint);
+  headTopPoint.y += modelBounds.size.y * 0.17;
+  headPoint.project(camera);
+  headTopPoint.project(camera);
+  const width = container.clientWidth;
+  const height = container.clientHeight;
+  const hx = ((headPoint.x + 1) / 2) * width;
+  const hy = ((1 - headPoint.y) / 2) * height;
+  const radius = Math.abs(((headPoint.y - headTopPoint.y) / 2) * height);
+  fx.follow(hx, hy, Math.max(18, radius));
+
+  if (document.hidden || isTalkMode) {
+    return;
+  }
+
+  // Doze off after a long quiet spell; Zz while asleep.
+  if (!sleeping && !isSpeaking && now - lastActivity > 30000) {
+    sleeping = true;
+    nextSnore = now;
+  }
+  if (sleeping && now >= nextSnore) {
+    fx.spawn("sleep");
+    nextSnore = now + 2600;
+  }
+  if (sleeping) {
+    return;
+  }
+
+  // Staring straight up for a while: "…"
+  if (lookTarget.y <= -0.95) {
+    lookUpSince ||= now;
+    if (now - lookUpSince > 1200 && now - lastLookUp > 12000) {
+      lastLookUp = now;
+      tiltUntil = now + 1500;
+      fx.spawn("ponder");
+    }
+  } else {
+    lookUpSince = 0;
+  }
+
+  // Now and then, a new face on its own.
+  if (!isSpeaking && now - lastExpressionAt > 20000 && now - lastActivity < 25000) {
+    const choices = ["happy", "blink", "relaxed"].filter((mode) => mode !== expressionMode);
+    setExpression(choices[Math.floor(Math.random() * choices.length)]);
+  }
 }
 
 function animate() {
@@ -433,8 +665,10 @@ function animate() {
   const delta = clock.getDelta();
   const elapsed = clock.elapsedTime;
 
-  updateTypewriter(performance.now());
-  updatePose(elapsed);
+  const now = performance.now();
+  updateTypewriter(now);
+  updatePose(elapsed, delta, now);
+  updateReactions(now);
   currentVrm?.update(delta);
   camera.position.lerp(desiredCameraPosition, 0.08);
   controls.target.lerp(desiredCameraTarget, 0.08);
@@ -470,8 +704,8 @@ controlsPanel.addEventListener("click", (event) => {
   }
 
   if (button.dataset.expression) {
-    expressionMode = button.dataset.expression;
-    setActiveButton("expression", expressionMode);
+    wake();
+    setExpression(button.dataset.expression, { force: true });
   }
 });
 
@@ -482,11 +716,73 @@ talkForm.addEventListener("submit", (event) => {
 });
 
 // The head follows the cursor anywhere on the page, not only over the canvas.
+let lastPointer = null;
 window.addEventListener("pointermove", (event) => {
   const rect = container.getBoundingClientRect();
   const x = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
   const y = ((event.clientY - (rect.top + rect.height * 0.25)) / rect.height) * 2;
   lookTarget.set(THREE.MathUtils.clamp(x, -1, 1), THREE.MathUtils.clamp(y, -1, 1));
+  wake();
+
+  // Whirling the cursor around the avatar makes it dizzy.
+  const now = performance.now();
+  const inside = Math.abs(x) < 1 && event.clientY > rect.top && event.clientY < rect.bottom;
+  if (inside && lastPointer && currentVrm) {
+    spin.push({ t: now, d: Math.hypot(event.clientX - lastPointer.x, event.clientY - lastPointer.y) });
+  }
+  lastPointer = { x: event.clientX, y: event.clientY };
+  spin = spin.filter((entry) => now - entry.t < 1500);
+  const travelled = spin.reduce((sum, entry) => sum + entry.d, 0);
+  if (travelled > rect.width * 3.5 && now - lastDizzy > 15000 && !isTalkMode) {
+    lastDizzy = now;
+    spin = [];
+    dizzyUntil = now + 2400;
+    setExpression("sad", { effect: false, force: true });
+    fx.spawn("dizzy");
+    sayReaction(LINES.dizzy);
+    calmDown(2800);
+  }
+});
+
+// Clicks: poking the avatar, or clicking somewhere with nothing to click.
+let pressStart = null;
+window.addEventListener("pointerdown", (event) => {
+  pressStart = { x: event.clientX, y: event.clientY, t: performance.now() };
+  wake();
+});
+window.addEventListener("pointerup", (event) => {
+  if (!pressStart || !currentVrm) return;
+  const moved = Math.hypot(event.clientX - pressStart.x, event.clientY - pressStart.y);
+  const quick = performance.now() - pressStart.t < 500;
+  pressStart = null;
+  if (moved > 6 || !quick || event.button !== 0) return;
+  if (event.target.closest("a, button, input, textarea, select, label, summary, [role='button'], .vrm-controls, .guide-box, .title-menu, .site-header")) return;
+  if (hitsAvatar(event.clientX, event.clientY)) {
+    poke();
+  } else if (containerOnScreen() && !isTalkMode) {
+    curious();
+  }
+});
+
+for (const type of ["keydown", "scroll", "touchstart"]) {
+  window.addEventListener(type, wake, { passive: true });
+}
+
+let hiddenAt = 0;
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    hiddenAt = performance.now();
+    fx.clear();
+    return;
+  }
+  const away = performance.now() - hiddenAt;
+  lastActivity = performance.now();
+  sleeping = false;
+  if (hiddenAt && away > 8000 && currentVrm && !isTalkMode) {
+    setExpression("happy", { force: true });
+    sayReaction(LINES.welcomeBack);
+    calmDown(3000);
+  }
 });
 
 document.addEventListener("pointerleave", () => {
@@ -501,11 +797,14 @@ document.addEventListener("guide:say", (event) => {
 });
 
 stage.addEventListener("scene:flash", () => {
-  if (currentVrm && !isSpeaking && expressionMode === "relaxed") {
-    expressionMode = "surprised";
+  if (currentVrm && !isSpeaking && !sleeping && containerOnScreen() && (expressionMode === "relaxed" || expressionMode === "neutral")) {
+    const before = expressionMode;
+    setExpression("surprised");
+    const token = lastExpressionAt;
     setTimeout(() => {
-      if (expressionMode === "surprised") expressionMode = "relaxed";
-    }, 600);
+      // Only undo our own surprise, not a face something else set meanwhile.
+      if (lastExpressionAt === token) setExpression(before, { effect: false });
+    }, 2200);
   }
 });
 
@@ -527,7 +826,7 @@ loader.load(
 
     currentVrm.scene.rotation.y = Math.PI;
     scene.add(currentVrm.scene);
-    applyRestPose(currentVrm);
+    initPose(currentVrm);
     calculateModelBounds(currentVrm);
     setCameraMode(cameraMode, true);
     status.remove();
